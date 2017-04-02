@@ -1,3 +1,6 @@
+######################################################################################################################################
+# 43 files
+######################################################################################################################################
 SELECT p.HOSPCODE,p.CID,p.`NAME`,p.LNAME,p.BIRTH,p.DISCHARGE,p.TYPEAREA 
 -- ,p.hnomoi,p.mumoi 
 ,TIMESTAMPDIFF(MONTH,p.birth,CURDATE()) as AGE_MO
@@ -24,10 +27,6 @@ SELECT p.HOSPCODE,p.CID,p.`NAME`,p.LNAME,p.BIRTH,p.DISCHARGE,p.TYPEAREA
 ,MIN(IF(e.VACCINETYPE='051',e.DATE_SERV,NULL)) AS JE1
 ,MIN(IF(e.VACCINETYPE='052',e.DATE_SERV,NULL)) AS JE2
 ,MIN(IF(e.VACCINETYPE='053',e.DATE_SERV,NULL)) AS JE3
-
-
-
-
 ,MIN(IF(e.VACCINETYPE='R11',e.DATE_SERV,NULL)) AS R11
 ,MIN(IF(e.VACCINETYPE='R12',e.DATE_SERV,NULL)) AS R12
 -- ,if(p.birth>'2015-08-01','need IPV',NULL) AS IPVCHECK
@@ -67,7 +66,49 @@ HAVING
 (ISNULL(OPV4) AND AGE_MO > 49) 
 ORDER BY p.birth
 
+######################################################################################################################################
 
+# JHCIS
+
+######################################################################################################################################
+
+SELECT p.pcucodeperson,p.idcard,p.fname,p.lname,p.birth,p.dischargetype,p.typelive 
+,p.hnomoi,p.mumoi 
+,TIMESTAMPDIFF(MONTH,p.birth,CURDATE()) as AGE_MO
+,MIN(IF(e.vaccinecode='BCG',e.dateepi,NULL)) AS BCG
+,MIN(IF(e.vaccinecode='HBV1',e.dateepi,NULL)) AS HBV1
+,MIN(IF(e.vaccinecode='DHB1',e.dateepi,NULL)) AS DHB1
+,MIN(IF(e.vaccinecode='OPV1',e.dateepi,NULL)) AS OPV1
+,MIN(IF(e.vaccinecode='DHB2',e.dateepi,NULL)) AS DHB2
+,MIN(IF(e.vaccinecode='OPV2',e.dateepi,NULL)) AS OPV2
+,MIN(IF(e.vaccinecode='DHB3',e.dateepi,NULL)) AS DHB3
+,MIN(IF(e.vaccinecode='OPV3',e.dateepi,NULL)) AS OPV3
+,MIN(IF(e.vaccinecode='MMR',e.dateepi,NULL)) AS MMR1
+,MIN(IF(e.vaccinecode='MMR2',e.dateepi,NULL)) AS MMR2
+,MIN(IF(e.vaccinecode='DTP4',e.dateepi,NULL)) AS DTP4
+,MIN(IF(e.vaccinecode='OPV4',e.dateepi,NULL)) AS OPV4
+,MIN(IF(e.vaccinecode='DTP5',e.dateepi,NULL)) AS DTP5
+,MIN(IF(e.vaccinecode='OPV5',e.dateepi,NULL)) AS OPV5
+,MIN(IF(e.vaccinecode='J11',e.dateepi,NULL)) AS LAJE1
+,MIN(IF(e.vaccinecode='J12',e.dateepi,NULL)) AS LAJE2
+,MIN(IF(e.vaccinecode='JE1',e.dateepi,NULL)) AS JE1
+,MIN(IF(e.vaccinecode='JE2',e.dateepi,NULL)) AS JE2
+,MIN(IF(e.vaccinecode='JE3',e.dateepi,NULL)) AS JE3
+,MIN(IF(e.vaccinecode='IPV-P',e.dateepi,NULL)) AS IPV
+,MIN(IF(e.vaccinecode='R21',e.dateepi,NULL)) AS R21
+,MIN(IF(e.vaccinecode='R22',e.dateepi,NULL)) AS R22
+,MIN(IF(e.vaccinecode='R23',e.dateepi,NULL)) AS R23
+,MIN(IF(e.vaccinecode='R11',e.dateepi,NULL)) AS R11
+,MIN(IF(e.vaccinecode='R12',e.dateepi,NULL)) AS R12
+FROM person p
+LEFT JOIN visitepi e
+ON p.pcucodeperson=e.pcucodeperson AND p.pid =e.pid 
+WHERE p.typelive in('1','3')
+AND p.dischargetype='9'
+AND TIMESTAMPDIFF(MONTH,p.birth,CURDATE()) > 12
+GROUP BY p.idcard
+HAVING (AGE_MO > 4  AND (ISNULL(IPV)))
+ORDER BY p.birth
 
 
 
