@@ -1,3 +1,5 @@
+# จำนวนนักเรียนหญิง ป.๔ ปีการศึกษา ๒๕๕๙ # 
+
 SELECT t.schoolname,count(*) n 
 FROM 
 (
