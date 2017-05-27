@@ -86,7 +86,7 @@ FROM
 (
 SELECT p.pcucodeperson,p.pid,p.birth
 ,MIN(IF(e.vaccinecode='R21',e.dateepi,NULL)) AS R21
-,MIN(IF(e.vaccinecode='R21',e.dateepi,NULL)) AS R22
+,MIN(IF(e.vaccinecode='R22',e.dateepi,NULL)) AS R22
 ,MIN(IF(e.vaccinecode='R23',e.dateepi,NULL)) AS R23
 FROM person p
 INNER JOIN visitepi  e
