@@ -1,3 +1,24 @@
+# jhcis
+SELECT *
+FROM 
+(
+SELECT p.idcard
+-- ,e.vaccinecode,e.hosservice,e.dateepi 
+,GROUP_CONCAT(if(e.vaccinecode='BCG',concat(CONVERT(e.dateepi USING utf8),'#',e.hosservice),NULL) ORDER BY e.dateepi ) as BCG
+,GROUP_CONCAT(if(e.vaccinecode='MMR',concat(CONVERT(e.dateepi USING utf8),'#',e.hosservice),NULL) ORDER BY e.dateepi ) as MMR1
+,GROUP_CONCAT(if(e.vaccinecode='JE1',concat(CONVERT(e.dateepi USING utf8),'#',e.hosservice),NULL) ORDER BY e.dateepi ) as JE1
+from	 visitepi e
+LEFT JOIN person p
+ON e.pcucodeperson=p.pcucodeperson AND e.pid=p.pid 
+where	p.birth > '2010-01-01'
+
+GROUP BY p.idcard
+) as t
+ORDER BY LENGTH(MMR1) DESC ;
+
+
+# 43 
+
 SELECT HOSPCODE,CID,MMR1
 FROM (
 SELECT p.HOSPCODE,p.CID,p.`NAME`,p.LNAME,p.BIRTH,p.DISCHARGE,p.TYPEAREA 
