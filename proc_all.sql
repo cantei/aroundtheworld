@@ -1,0 +1,17 @@
+SELECT t1.HOSPCODE,t1.PROCEDCODE 
+,t2.en_desc,t2.th_desc
+,t1.n  
+FROM 
+(
+SELECT  p.HOSPCODE,p.PROCEDCODE
+,count(*) n
+FROM procedure_opd p
+WHERE p.DATE_SERV  BETWEEN  '2016-10-01' and	'2017-09-30'
+AND p.HOSPCODE<>'10727'
+GROUP BY p.HOSPCODE,p.PROCEDCODE
+) as t1 
+LEFT JOIN cproced t2
+ON t1.PROCEDCODE=t2.procedcode 
+ORDER BY t1.HOSPCODE,t2.th_desc ;
+
+-- LIMIT 30
