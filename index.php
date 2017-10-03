@@ -1,8 +1,8 @@
   <?php 
   
 	
-	$objConnect = mysql_connect("203.157.213.69","root","6701sso");
-	$objDB = mysql_select_db("dhdc");
+	$objConnect = mysql_connect("");
+	$objDB = mysql_select_db("");
 	mysql_query("SET NAMES utf8");   
 	if(1==1){
 	// data1
