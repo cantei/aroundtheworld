@@ -1,9 +1,8 @@
   <?php 
-  
-	
 	$objConnect = mysql_connect("");
 	$objDB = mysql_select_db("");
-	mysql_query("SET NAMES utf8");   
+	mysql_query("SET NAMES utf8");
+
 	if(1==1){
 	// data1
 	$sth = mysql_query("SELECT t3.HOSPCODE,t1.tbno
@@ -17,7 +16,7 @@
 						INNER JOIN person p
 						ON concat('0',t.hn)=p.HN 
 						WHERE p.HOSPCODE='10727'
-						AND t.be='2556'
+						AND t.be='2557'
 						) as t1 
 						LEFT JOIN person t2
 						ON t1.CID=t2.CID 
@@ -45,7 +44,7 @@
 						INNER JOIN person p
 						ON concat('0',t.hn)=p.HN 
 						WHERE p.HOSPCODE='10727'
-						AND t.be='2557'
+						AND t.be='2570'
 						) as t1 
 						LEFT JOIN person t2
 						ON t1.CID=t2.CID 
@@ -73,7 +72,7 @@
 						INNER JOIN person p
 						ON concat('0',t.hn)=p.HN 
 						WHERE p.HOSPCODE='10727'
-						AND t.be='2558'
+						AND t.be='2559'
 						) as t1 
 						LEFT JOIN person t2
 						ON t1.CID=t2.CID 
@@ -101,7 +100,7 @@
 						INNER JOIN person p
 						ON concat('0',t.hn)=p.HN 
 						WHERE p.HOSPCODE='10727'
-						AND t.be='2559'
+						AND t.be='2560'
 						) as t1 
 						LEFT JOIN person t2
 						ON t1.CID=t2.CID 
@@ -116,6 +115,11 @@
 		// echo $json2;
 
 	}
+	
+	$allData = array($json1,$json2,$json3);
+
+	// print_r($allData[0]);
+	// exit;
 	
 	
 	
@@ -149,98 +153,89 @@
       map = new google.maps.Map(document.getElementById("map_canvas"),
         mapOptions);
 
-     var json1 = <?= $json1; ?>
-	  
-	  var json2 =<?= $json2; ?>
-	  
-	   var json3 =<?= $json3; ?>
-	  
-	    var json4 = <?= $json4; ?>
-		
-		// add marker
-	  
-      if(json1=null){
-	  
-		  $.each(json1, function(key, data) {  // set marker from json1 
-			var mylatlng = new google.maps.LatLng(data.lat, data.lng);
-			var pinIcon = new google.maps.MarkerImage(
-				"http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFC0CB",
-				null, /* size is determined at runtime */
-				null, /* origin is 0,0 */
-				null, /* anchor is bottom center of the scaled image */
-				new google.maps.Size(25, 35)
-			);
-			// Creating a marker and putting it on the map
-			var marker1 = new google.maps.Marker({
-			  position: mylatlng,
-			  icon : pinIcon
-			});
-			// marker1.setMap(map);
-			marker1.setMap(null);
-			
-		  });
-	  
-	  }else
-	  { 
-		alert('no json');
-	   //  marker1.setMap(null);
-		 //return true;
-	  }
-	    if(json2!=null){
-	  // merker2
-	$.each(json2, function(key, data) {  // set marker from json1 
-        var mylatlng = new google.maps.LatLng(data.lat, data.lng);
-		 var image2 = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|7FFF00";
-        // Creating a marker and putting it on the map
-        var marker2 = new google.maps.Marker({
-		
-          position: mylatlng,
-		  icon : image2
-        });
-        marker2.setMap(map);
-      });
-	  
-		  }else{return null;}
-		  
-	
-		
-		if(json3!=null){
-	  	  // add merker3
-	$.each(json3, function(key, data) {  // set marker from json1 
-        var mylatlng = new google.maps.LatLng(data.lat, data.lng);
-		 var image3 = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|00CED1";
-        // Creating a marker and putting it on the map
-        var marker3 = new google.maps.Marker({
-		
-          position: mylatlng,
-		  icon : image3
-        });
-        marker3.setMap(map);
-      });
-	  
-		}
-		
-		  if(json4!=null){
-	  	  // addd merker4
-			$.each(json4, function(key, data) {  // set marker from json1 
-				var mylatlng = new google.maps.LatLng(data.lat, data.lng);
-				 var image2 = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF0000";
-				// Creating a marker and putting it on the map
-				var marker2 = new google.maps.Marker({
+			 var Array1 = '<?=$allData[0]?>';
+			 var arrayLength1 = Array1.length;
+			 var Array2 = '<?=$allData[1]?>';
+			 var arrayLength2 = Array2.length;
+			 var Array3 = '<?=$allData[2]?>';
+			 var arrayLength3 = Array3.length;
+			 
+			if(arrayLength1>2)
+			{
+				var jsonObj = JSON.parse(Array1);
+				for (i = 0; i < jsonObj.length; i++) {
+					var address = "";
+					 var image2 = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|7FFF00";
+					// this gives me the full address as a string
+					address += jsonObj[i].HOSPCODE + " " + jsonObj[i].lat + " " + jsonObj[i].lng;
+					marker = new google.maps.Marker({
+							   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
+							   map: map,
+							   icon : image2,
+							   
+							   title: jsonObj[i].HOSPCODE
+							});
+					
+				} // end loop 
+			}else{
+				alert('no data1');
+				// return false;
+			}
+			if(arrayLength2>2)
+			{
 				
-				  position: mylatlng,
-				  icon : image2
-				});
-				marker2.setMap(map);
-			  });
-		  }
-		  
-		  
-		  
-	  
-	  
-	  
-    }
+				var jsonObj = JSON.parse(Array2);
+				for (i = 0; i < jsonObj.length; i++) {
+					var address = "";
+					 var image2 = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF";
+					// this gives me the full address as a string
+					address += jsonObj[i].HOSPCODE + " " + jsonObj[i].lat + " " + jsonObj[i].lng;
+					marker = new google.maps.Marker({
+							   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
+							   map: map,
+							   icon : image2,
+							   
+							   title: jsonObj[i].HOSPCODE
+							});
+					
+				} // end loop 
+				
+			}else{
+				// alert('no2');
+				// continue;
+				// return false;
+			}
+			if(arrayLength3>2)
+			{
+				var jsonObj = JSON.parse(Array3);
+				for (i = 0; i < jsonObj.length; i++) {
+					var address = "";
+					 var image2 = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF7F50";
+					// this gives me the full address as a string
+					address += jsonObj[i].HOSPCODE + " " + jsonObj[i].lat + " " + jsonObj[i].lng;
+					marker = new google.maps.Marker({
+							   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
+							   map: map,
+							   icon : image2,
+							   
+							   title: jsonObj[i].HOSPCODE
+							});
+				} // end loop 				
+			}else{
+					alert('no3');
+			}	
+   		
+ 
+ 
+ 
+ 
+ 
+ 
+	
+	
+	
+	
+    } // end map
   </script>
 
 </head>
