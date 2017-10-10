@@ -148,6 +148,24 @@ GROUP BY t.be,t.tb_id
 on t0.be = t1.be AND t0.tb_id=t1.tb_id 
 set t0.asthma=t1.visit;
 
+-- Sillicosis
+update me_tb_cc t0
+inner join 
+(
+SELECT t.be,t.tb_id,tbno
+,p.CID,p.birth
+,SPLIT_STR(GROUP_CONCAT(d.DATE_SERV ORDER BY d.date_serv SEPARATOR ','),',',1) as visit 
+FROM me_tb_reg t
+LEFT JOIN person p
+ON CONCAT('0',t.hn)=p.HN 
+LEFT JOIN diagnosis_opd d
+ON p.HOSPCODE=d.HOSPCODE AND p.PID=d.PID 
+WHERE p.HOSPCODE='10727'
+AND SUBSTR(d.DIAGCODE,1,3)='J62'
+GROUP BY t.be,t.tb_id
+) t1 
+on t0.be = t1.be AND t0.tb_id=t1.tb_id 
+set t0.silicosis=t1.visit;
 # report 
 SELECT  t.be,t.tb_id,t.hn
 ,t1.age,t1.dm,t1.ht,t1.hiv,t1.ckd,t1.copd,t1.asthma 
