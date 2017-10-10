@@ -1,4 +1,5 @@
-CREATE TABLE me_tb_cc (
+DROP TABLE IF EXISTS `me_tb_cc`;
+CREATE TABLE  `me_tb_cc` (
     be int NOT NULL,
     tb_id int NOT NULL,
     age int NOT NULL,
@@ -8,6 +9,7 @@ CREATE TABLE me_tb_cc (
 		ckd date,
 		copd date,
 		asthma date,
+		silicosis date,
     PRIMARY KEY (be,tb_id);
 );
 
