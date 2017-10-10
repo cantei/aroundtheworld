@@ -2,7 +2,7 @@
 	$objConnect = mysql_connect("");
 	$objDB = mysql_select_db("dhdc");
 	mysql_query("SET NAMES utf8");   
-	
+		
 	if(1==1){
 	// data1
 	$sth = mysql_query("SELECT t3.HOSPCODE,t1.tbno
@@ -194,38 +194,36 @@ function pinSymbol(color) {
 					// this gives me the full address as a string
 					address += jsonObj[i].HOSPCODE + " " + jsonObj[i].lat + " " + jsonObj[i].lng;
 					marker = new google.maps.Marker({
-							   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
-							   map: map,
-							  
-								label: {
-									text: 'A',
-									color: 'white',
-								},
-								icon: pinSymbol('#036635'),
-							   
-								// icon: {
-									// path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-									// strokeColor: "red",
-									// scale: 3
-								// },
-							  // icon : image,
-							  // label : 'A',
-							   
-							   title: jsonObj[i].HOSPCODE
-							});
-					marker.info = new google.maps.InfoWindow({
-						content: jsonObj[i].HOSPCODE
-						
-						
-                });
-				
-				  google.maps.event.addListener(marker, 'click', function() {  
+					   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
+					   map: map,
+						label: {
+							text: 'A',
+							color: 'white',
+						},
+						icon: pinSymbol('#036635'),				
+						// icon: {
+							// path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+							// strokeColor: "red",
+							// scale: 3
+						// },
+					  // icon : image,
+					  // label : 'A',					   
+					   title: 'TbNo :'+jsonObj[i].tbno
+					});
+				google.maps.event.addListener(marker, 'click', function() {  
                 // this = marker
                 var marker_map = this.getMap();
                 this.info.open(marker_map, this);
                 // Note: If you call open() without passing a marker, the InfoWindow will use the position specified upon construction through the InfoWindowOptions object literal.
                 });
-					
+				marker.info = new google.maps.InfoWindow({
+					content: 'TbNo :'+jsonObj[i].tbno+'<br>'+' HCODE :'+ jsonObj[i].HOSPCODE+'<br>'+'ผลการรักษา :'+jsonObj[i].outcomes						
+				});				
+				google.maps.event.addListener(marker, 'click', function() {  
+					// this = marker
+					var marker_map = this.getMap();
+					this.info.open(marker_map, this);
+				});	
 				} // end loop 
 			}else{
 				alert('no data1');
@@ -241,16 +239,26 @@ function pinSymbol(color) {
 					// this gives me the full address as a string
 					address += jsonObj[i].HOSPCODE + " " + jsonObj[i].lat + " " + jsonObj[i].lng;
 					marker = new google.maps.Marker({
-							   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
-							   map: map,
-								label: {
-									text: 'B',
-									color: 'black',
-								},
-								icon: pinSymbol('#FFD500'),
-							   title: jsonObj[i].HOSPCODE
-							});
-					
+					   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
+					   map: map,
+						label: {
+							text: 'B',
+							color: 'black',
+						},
+						icon: pinSymbol('#FFD500'),
+						title: 'TbNo :'+jsonObj[i].tbno
+					});							
+				google.maps.event.addListener(marker, 'click', function() {  
+                var marker_map = this.getMap();
+                this.info.open(marker_map, this);
+                });
+				marker.info = new google.maps.InfoWindow({
+					content: 'TbNo :'+jsonObj[i].tbno+'<br>'+' HCODE :'+ jsonObj[i].HOSPCODE+'<br>'+'ผลการรักษา :'+jsonObj[i].outcomes						
+				});
+				google.maps.event.addListener(marker, 'click', function() {  
+					var marker_map = this.getMap();
+					this.info.open(marker_map, this);
+				});	
 				} // end loop 
 				
 			}else{
@@ -282,9 +290,20 @@ function pinSymbol(color) {
 									color: 'white',
 								},
 								icon: pinSymbol('#0085ca'),
-							   
-							   title: jsonObj[i].HOSPCODE
-							});
+								title: 'TbNo :'+jsonObj[i].tbno
+					});							
+				google.maps.event.addListener(marker, 'click', function() {  
+                var marker_map = this.getMap();
+                this.info.open(marker_map, this);
+                });
+				marker.info = new google.maps.InfoWindow({
+					content: 'TbNo :'+jsonObj[i].tbno+'<br>'+' HCODE :'+ jsonObj[i].HOSPCODE+'<br>'+'ผลการรักษา :'+jsonObj[i].outcomes						
+				});
+				google.maps.event.addListener(marker, 'click', function() {  
+					var marker_map = this.getMap();
+					this.info.open(marker_map, this);
+				});	
+
 				} // end loop 				
 			}
  
@@ -299,16 +318,26 @@ function pinSymbol(color) {
 					// this gives me the full address as a string
 					address += jsonObj[i].HOSPCODE + " " + jsonObj[i].lat + " " + jsonObj[i].lng;
 					marker = new google.maps.Marker({
-							   position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
-							   map: map,
-							 label: {
-									text: 'D',
-									color: 'white',
+						position: new google.maps.LatLng(jsonObj[i].lat, jsonObj[i].lng),
+						map: map,
+						label: {
+								text: 'D',
+								color: 'white',
 								},
-								icon: pinSymbol('#e8112d'),
-							  
-							 //  title: jsonObj[i].HOSPCODE
-							});
+						icon: pinSymbol('#e8112d'),							  
+						title: 'TbNo :'+jsonObj[i].tbno
+					});							
+				google.maps.event.addListener(marker, 'click', function() {  
+                var marker_map = this.getMap();
+                this.info.open(marker_map, this);
+                });
+				marker.info = new google.maps.InfoWindow({
+					content: 'TbNo :'+jsonObj[i].tbno+'<br>'+' HCODE :'+ jsonObj[i].HOSPCODE+'<br>'+'ผลการรักษา :'+jsonObj[i].outcomes						
+				});
+				google.maps.event.addListener(marker, 'click', function() {  
+					var marker_map = this.getMap();
+					this.info.open(marker_map, this);
+				});	
 				} // end loop 				
 			}
  
