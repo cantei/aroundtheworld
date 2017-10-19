@@ -53,6 +53,23 @@ update me_tb_acf t0
 inner join 
 (
 SELECT p.CID
+,SPLIT_STR(GROUP_CONCAT(c.DATE_DIAG ORDER BY c.DATE_DIAG SEPARATOR ','),',',1) as visit 
+FROM  person p
+LEFT JOIN chronic c
+ON p.HOSPCODE=c.HOSPCODE AND p.PID=c.PID 
+WHERE SUBSTR(c.CHRONIC,1,3) BETWEEN 'E10' AND 'E14'
+GROUP BY p.CID
+LIMIT 10
+) as t1
+on t0.cid=t1.cid
+set t0.dm=t1.visit
+WHERE ISNULL(t0.dm);
+
+
+update me_tb_acf t0
+inner join 
+(
+SELECT p.CID
 ,SPLIT_STR(GROUP_CONCAT(d.DATE_SERV ORDER BY d.date_serv SEPARATOR ','),',',1) as visit 
 FROM  person p
 LEFT JOIN diagnosis_opd d
