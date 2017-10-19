@@ -1,14 +1,15 @@
 DROP TABLE IF EXISTS `me_tb_acf`;
 CREATE TABLE  `me_tb_acf` (
 		hospcode VARCHAR(5),
-		pid VARCHAR(15),
 		hn VARCHAR(15),
+		pid VARCHAR(15),		
 		cid VARCHAR(13),
+		hid VARCHAR(13),
 		fname  VARCHAR(30),
 		lname  VARCHAR(30),
 		birth date,
 		sex  VARCHAR(13),
-    age int ,
+    		age int ,
 		hno VARCHAR(20),
 		villagecode VARCHAR(8),
 		dm date,
@@ -33,6 +34,11 @@ AND p.DISCHARGE='9';
 
 update me_tb_acf 
 SET age=TIMESTAMPDIFF(YEAR,birth,'2017-10-01');
+
+
+
+
+
 
 update me_tb_acf t0
 inner join 
@@ -59,7 +65,6 @@ LEFT JOIN chronic c
 ON p.HOSPCODE=c.HOSPCODE AND p.PID=c.PID 
 WHERE SUBSTR(c.CHRONIC,1,3) BETWEEN 'E10' AND 'E14'
 GROUP BY p.CID
-LIMIT 10
 ) as t1
 on t0.cid=t1.cid
 set t0.dm=t1.visit
@@ -124,3 +129,17 @@ GROUP BY p.CID
 ) as t1
 on t0.cid=t1.cid
 set t0.silicosis=t1.visit;
+
+# report 
+SELECT * 
+FROM me_tb_acf 
+WHERE hospcode='07727'
+AND 
+(
+age > 60
+OR NOT ISNULL(dm)
+OR NOT ISNULL(ckd)
+OR NOT ISNULL(copd)
+OR NOT ISNULL(asthma)
+OR NOT ISNULL(silicosis)
+);
