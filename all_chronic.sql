@@ -20,8 +20,19 @@
 			`volanteer` varchar(100) default NULL,
 			`dm` date default NULL,
 			`ht` date default NULL,
+			`cvd` date default NULL,
+			`stroke` date default NULL,
+			`ihd` date default NULL,
 			`copd` date default NULL,
-			`renalfailure` date default NULL
+			`asthma` date default NULL,
+			`emphysema` date default NULL,
+			`obesity` date default NULL,
+			`cancer` date default NULL,
+			`hiv` date default NULL,
+			`cirrhosis` date default NULL,
+			`chepatitis` date default NULL,
+			`crheumatoid` date default NULL,
+			`crenalfailure` date default NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # add profile 
