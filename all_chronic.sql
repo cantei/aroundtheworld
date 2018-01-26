@@ -75,3 +75,120 @@ INNER JOIN
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
 SET t0.dm=t1.datediag;
 
+
+# add HT
+UPDATE tmp_chronic_all  t0
+INNER JOIN
+(
+	SELECT p.pcucodeperson,p.pid
+	,SPLIT_STR(GROUP_CONCAT(c.datefirstdiag ORDER BY c.datefirstdiag SEPARATOR ','),',',1) as datediag 
+	FROM  person p
+	LEFT JOIN personchronic c
+	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
+	WHERE substr(REPLACE(chroniccode,'.',''),1,3) BETWEEN 'I10' AND 'I15' 
+	GROUP BY p.pcucodeperson,p.pid
+) as t1
+ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
+SET t0.ht=t1.datediag;
+
+
+# add CVD
+UPDATE tmp_chronic_all  t0
+INNER JOIN
+(
+	SELECT p.pcucodeperson,p.pid
+	,SPLIT_STR(GROUP_CONCAT(c.datefirstdiag ORDER BY c.datefirstdiag SEPARATOR ','),',',1) as datediag 
+	FROM  person p
+	LEFT JOIN personchronic c
+	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
+	WHERE substr(REPLACE(chroniccode,'.',''),1,3) BETWEEN 'I60' AND 'I69' 
+	GROUP BY p.pcucodeperson,p.pid
+) as t1
+ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
+SET t0.cvd=t1.datediag;
+
+
+# add stroke
+UPDATE tmp_chronic_all  t0
+INNER JOIN
+(
+	SELECT p.pcucodeperson,p.pid
+	,SPLIT_STR(GROUP_CONCAT(c.datefirstdiag ORDER BY c.datefirstdiag SEPARATOR ','),',',1) as datediag 
+	FROM  person p
+	LEFT JOIN personchronic c
+	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
+	WHERE substr(REPLACE(chroniccode,'.',''),1,3) BETWEEN 'I64' AND 'I64' 
+	GROUP BY p.pcucodeperson,p.pid
+) as t1
+ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
+SET t0.stroke=t1.datediag;
+
+
+# add ihd
+UPDATE tmp_chronic_all  t0
+INNER JOIN
+(
+	SELECT p.pcucodeperson,p.pid
+	,SPLIT_STR(GROUP_CONCAT(c.datefirstdiag ORDER BY c.datefirstdiag SEPARATOR ','),',',1) as datediag 
+	FROM  person p
+	LEFT JOIN personchronic c
+	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
+	WHERE substr(REPLACE(chroniccode,'.',''),1,3) BETWEEN 'I20' AND 'I25' 
+	GROUP BY p.pcucodeperson,p.pid
+) as t1
+ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
+SET t0.ihd=t1.datediag;
+
+
+# add copd
+UPDATE tmp_chronic_all  t0
+INNER JOIN
+(
+	SELECT p.pcucodeperson,p.pid
+	,SPLIT_STR(GROUP_CONCAT(c.datefirstdiag ORDER BY c.datefirstdiag SEPARATOR ','),',',1) as datediag 
+	FROM  person p
+	LEFT JOIN personchronic c
+	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
+	WHERE substr(REPLACE(chroniccode,'.',''),1,4) BETWEEN 'J449' AND 'J449' 
+	GROUP BY p.pcucodeperson,p.pid
+) as t1
+ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
+SET t0.copd=t1.datediag;
+
+# add copd
+UPDATE tmp_chronic_all  t0
+INNER JOIN
+(
+	SELECT p.pcucodeperson,p.pid
+	,SPLIT_STR(GROUP_CONCAT(c.datefirstdiag ORDER BY c.datefirstdiag SEPARATOR ','),',',1) as datediag 
+	FROM  person p
+	LEFT JOIN personchronic c
+	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
+	WHERE substr(REPLACE(chroniccode,'.',''),1,4) BETWEEN 'J449' AND 'J449' 
+	GROUP BY p.pcucodeperson,p.pid
+) as t1
+ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
+SET t0.copd=t1.datediag;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
