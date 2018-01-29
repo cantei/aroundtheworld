@@ -317,6 +317,6 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.crheumatoid=t1.datediag;
 
 ###### Report 
-SELECT *
+SELECT idcard,dm,DATE_FORMAT(DATE_ADD(dm, INTERVAL 543 YEAR),'%d-%M-%Y') as date_dm
 FROM tmp_chronic_all
 ORDER BY (mumoi*1),(SPLIT_STR(hnomoi,'/', 1)*1),(SPLIT_STR(hnomoi,'/',2)*1);
