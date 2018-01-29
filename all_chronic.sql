@@ -317,6 +317,9 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.crheumatoid=t1.datediag;
 
 ###### Report 
-SELECT idcard,dm,concat(DATE_FORMAT(birth,'%d-%M'),'-',(year(birth)+543)) as date_dm
+SELECT idcard,dm,CASE WHEN dm IS NOT NULL 
+THEN concat(DATE_FORMAT(dm,'%d-%M'),'-',(year(dm)+543))
+ELSE NULL
+END AS date_dm
 FROM tmp_chronic_all
 ORDER BY (mumoi*1),(SPLIT_STR(hnomoi,'/', 1)*1),(SPLIT_STR(hnomoi,'/',2)*1);
