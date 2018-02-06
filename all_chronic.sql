@@ -33,7 +33,9 @@
 			`chepatitis` date default NULL,
 			`osteoarthritis` date default NULL,
 			`crheumatoid` date default NULL,
-			`crenalfailure` date default NULL
+			`crenalfailure` date default NULL,
+			`diag_2regist` varchar(100) default NULL,
+			`datediag_2regist` varchar(100) default NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # add profile 
@@ -316,10 +318,29 @@ INNER JOIN
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
 SET t0.crheumatoid=t1.datediag;
 
+
+UPDATE tmp_chronic_all  t0
+INNER JOIN
+(
+	SELECT CARD_ID,`NAME`,LNAME
+		,HNO,VILLAGE_ID
+		-- ,DIAG,DATE_DX,HCODE
+		,GROUP_CONCAT(DIAG ORDER BY DATE_DX SEPARATOR ',' ) as DIAG
+		,GROUP_CONCAT(DATE_DX ORDER BY DATE_DX SEPARATOR ',' ) as DATE_DX
+		,GROUP_CONCAT(HCODE ORDER BY DATE_DX SEPARATOR ',' ) as HCODE
+		FROM me_unknownchronic 
+		GROUP BY CARD_ID
+) as t1
+ON t0.idcard=t1.CARD_ID
+SET t0.diag_2regist=t1.DIAG,t0.datediag_2regist=t1.DATE_DX;
+
+
 ###### Report 
+/*
 SELECT idcard,dm,CASE WHEN dm IS NOT NULL 
 THEN concat(DATE_FORMAT(dm,'%d-%M'),'-',(year(dm)+543))
 ELSE NULL
 END AS date_dm
 FROM tmp_chronic_all
 ORDER BY (mumoi*1),(SPLIT_STR(hnomoi,'/', 1)*1),(SPLIT_STR(hnomoi,'/',2)*1);
+*/
