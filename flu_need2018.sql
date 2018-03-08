@@ -83,7 +83,7 @@ INNER JOIN
 		WHERE p.typelive in ('1','3') 
 		AND p.dischargetype='9'
 		AND 	 substr(d.diagcode,1,3) BETWEEN 'J44' AND 'J44'
-		AND TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+		AND TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 		GROUP BY p.pcucodeperson,p.pid
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
@@ -105,7 +105,7 @@ INNER JOIN
 		WHERE p.typelive in ('1','3') 
 		AND p.dischargetype='9'
 		AND 	 substr(d.diagcode,1,3) BETWEEN 'J45' AND 'J45'
-		AND TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+		AND TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 		GROUP BY p.pcucodeperson,p.pid
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
@@ -127,7 +127,7 @@ INNER JOIN
 		WHERE p.typelive in ('1','3') 
 		AND p.dischargetype='9'
 		AND 	 substr(d.diagcode,1,3) BETWEEN 'I20' AND 'I25'
-		AND TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+		AND TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 		GROUP BY p.pcucodeperson,p.pid
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
@@ -149,7 +149,7 @@ INNER JOIN
 		WHERE p.typelive in ('1','3') 
 		AND p.dischargetype='9'
 		AND 	 substr(d.diagcode,1,3) BETWEEN 'I64' AND 'I64'
-		AND TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+		AND TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 		GROUP BY p.pcucodeperson,p.pid
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
@@ -171,7 +171,7 @@ INNER JOIN
 		WHERE p.typelive in ('1','3') 
 		AND p.dischargetype='9'
 		AND 	 substr(d.diagcode,1,3) BETWEEN 'N17' AND 'N19'
-		AND TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+		AND TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 		GROUP BY p.pcucodeperson,p.pid
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
@@ -192,7 +192,7 @@ INNER JOIN
 		WHERE p.typelive in ('1','3') 
 		AND p.dischargetype='9'
 		AND 	 substr(d.diagcode,1,3) BETWEEN 'E10' AND 'E14'
-		AND TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+		AND TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 		GROUP BY p.pcucodeperson,p.pid
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
@@ -211,7 +211,7 @@ SELECT p.pcucodeperson,p.pid
 	FROM  person p
 	LEFT JOIN personchronic c
 	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
-	WHERE TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+	WHERE TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 	AND substr(REPLACE(c.chroniccode,'.',''),1,3) BETWEEN 'J44' AND 'J44' 
 	GROUP BY p.pcucodeperson,p.pid	
 ) as t1
@@ -230,7 +230,7 @@ SELECT p.pcucodeperson,p.pid
 	FROM  person p
 	LEFT JOIN personchronic c
 	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
-	WHERE TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+	WHERE TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 	AND substr(REPLACE(c.chroniccode,'.',''),1,3) BETWEEN 'J45' AND 'J45' 
 	GROUP BY p.pcucodeperson,p.pid	
 ) as t1
@@ -249,7 +249,7 @@ SELECT p.pcucodeperson,p.pid
 	FROM  person p
 	LEFT JOIN personchronic c
 	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
-	WHERE TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+	WHERE TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 	AND substr(REPLACE(c.chroniccode,'.',''),1,3) BETWEEN 'I20' AND 'I25' 
 	GROUP BY p.pcucodeperson,p.pid	
 ) as t1
@@ -268,7 +268,7 @@ SELECT p.pcucodeperson,p.pid
 	FROM  person p
 	LEFT JOIN personchronic c
 	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
-	WHERE TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+	WHERE TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 	AND substr(REPLACE(c.chroniccode,'.',''),1,3) BETWEEN 'I64' AND 'I64' 
 	GROUP BY p.pcucodeperson,p.pid	
 ) as t1
@@ -288,7 +288,7 @@ SELECT p.pcucodeperson,p.pid
 	FROM  person p
 	LEFT JOIN personchronic c
 	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
-	WHERE TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+	WHERE TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 	AND substr(REPLACE(c.chroniccode,'.',''),1,3) BETWEEN 'N17' AND 'N19' 
 	GROUP BY p.pcucodeperson,p.pid	
 ) as t1
@@ -306,7 +306,7 @@ SELECT p.pcucodeperson,p.pid
 	FROM  person p
 	LEFT JOIN personchronic c
 	ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
-	WHERE TIMESTAMPDIFF(MONTH,p.birth,'2018-05-01') > 65
+	WHERE TIMESTAMPDIFF(YEAR,p.birth,'2018-05-01') > 65
 	AND substr(REPLACE(c.chroniccode,'.',''),1,3) BETWEEN 'E10' AND 'E14' 
 	GROUP BY p.pcucodeperson,p.pid	
 ) as t1
