@@ -325,4 +325,38 @@ SELECT *
 FROM person 
 ) as t1
 ON t0.pcucodepersonvola=t1.pcucodeperson AND t0.pidvola=t1.pid 
-SET t0.volanteer=concat(t1.fname,'  ',t1.lname)
+SET t0.volanteer=concat(t1.fname,'  ',t1.lname);
+
+
+# report 
+SELECT m.moo,m.hno
+,concat(c.titlename,m.fname,"  ",m.lname)  as fullname
+,concat(DATE_FORMAT(m.birth,'%d-%m'),'-',(YEAR(m.birth)+543)) as born
+,lmp_pregage,age_month
+,copd,asthma,ihd,stroke,renalfailure,dm
+,concat(copd,asthma,ihd,stroke,renalfailure,dm) as chronic
+,volanteer
+,IF(ISNULL(copd),'', concat(copd,',')) as a1
+,IF(ISNULL(asthma),'', concat(asthma,',')) as a2
+,IF(ISNULL(ihd),'', concat(ihd,',')) as a3
+,IF(ISNULL(stroke),'', concat(stroke,',')) as a4
+,IF(ISNULL(renalfailure),'', concat(renalfailure,',')) as a5
+,IF(ISNULL(dm),'',dm )as a6
+,COALESCE(copd,dm) as a7
+
+FROM me_flu_needs m
+LEFT JOIN ctitle c
+ON m.prename=c.titlecode 
+WHERE (NOT ISNULL(lmp_pregage) 
+OR NOT ISNULL(age_month)
+OR NOT ISNULL(copd)
+OR NOT ISNULL(ihd)
+OR NOT ISNULL(stroke)
+OR NOT ISNULL(renalfailure)
+OR NOT ISNULL(dm)
+) 
+-- AND TIMESTAMPDIFF(YEAR,birth,'2018-05-01') > 65
+
+ORDER BY moo,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1)
+
+
