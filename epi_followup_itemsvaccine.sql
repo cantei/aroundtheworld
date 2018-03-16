@@ -607,3 +607,25 @@ end BLOCK16;
 
 
 END
+# report 
+/* 
+SELECT p.pcucodeperson,p.pid,p.idcard
+,concat(c.titlename,p.fname,'   ',p.lname) as fullname
+,p.birth
+,i.age_month
+,h.hno,substr(h.villcode,7,2) as moo 
+,i.memo
+,concat(v.fname,'    ',v.lname) as 'volanteer'
+FROM table11 i
+INNER JOIN person p
+ON i.pcucodeperson=p.pcucodeperson AND i.pid=p.pid  
+INNER JOIN ctitle c
+ON p.prename=c.titlecode 
+INNER JOIN house h
+ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode
+LEFT JOIN person v
+ON h.pcucodepersonvola=v.pcucodeperson AND h.pidvola=v.pid  
+WHERE NOT ISNULL(memo)
+ORDER BY moo,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1)
+
+*/
