@@ -22,3 +22,4 @@ LEFT JOIN person
 ON t0.pcucodepersonvola=person.pcucodeperson AND t0.pidvola=person.pid
 LEFT JOIN ctitle c
 ON t0.prename=c.titlecode ;
+
