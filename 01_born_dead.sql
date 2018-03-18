@@ -38,4 +38,4 @@ INNER JOIN village ON village.pcucode = house.pcucode AND village.villcode = hou
 INNER JOIN personaddresscontact ON personaddresscontact.pcucodeperson = person.pcucodeperson AND personaddresscontact.pid = person.pid
 INNER JOIN chospital ON chospital.hoscode = person.pcucodeperson
 WHERE person.dischargetype = '9' AND person.typelive IN ('0','1','3') and person.nation = 099
-GROUP BY person.pcucodeperson
+GROUP BY person.pcucodeperson;
