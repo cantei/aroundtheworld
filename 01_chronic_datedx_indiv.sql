@@ -389,3 +389,4 @@ INNER JOIN
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
 SET t0.osteoarthritis=t1.diag
 		,t0.osteoarthritis_dxdate=t1.firstdiag;		
+๒
