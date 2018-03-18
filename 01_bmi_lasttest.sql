@@ -19,4 +19,4 @@ GROUP BY s.pcucode,s.pid
 
 ) as t1 
 ON t0.pcucodeperson=t1.pcucode AND t0.pid=t1.pid 
-HAVING lastscreen BETWEEN '2016-01-01' AND  '2016-03-31'
+HAVING lastscreen BETWEEN '2016-01-01' AND  '2016-03-31';
