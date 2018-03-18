@@ -1,4 +1,4 @@
-# จำนวนนักเรียนหญิง ป.๔ ปีการศึกษา ๒๕๕๙ # 
+# จำนวนนักเรียนหญิง ป.๕ # 
 
 SELECT t.villcode,t.schoolname,count(*) as n
 FROM 
@@ -17,7 +17,7 @@ LEFT JOIN person m
 ON p.pcucodeperson=m.pcucodeperson AND p.pid=m.pid  
 WHERE
 -- v.villcode='67010207' AND 
-p.classeducate='7' AND 
+p.classeducate='8' AND 
 m.sex='2'
 ORDER BY c.classcode,m.pid
 ) as t
