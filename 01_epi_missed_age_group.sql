@@ -245,9 +245,3 @@ HAVING
 (age_day > 1488 AND ISNULL(OPV5)) OR 
 CHK_JE='0' OR 
 CHK_M='0';
-
- 
-
-
-
-
