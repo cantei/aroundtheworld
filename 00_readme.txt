@@ -1,0 +1,39 @@
+=======================================================================================================================================
+# fix date BLOB
+
+SELECT p.pcucodeperson,p.pid
+,GROUP_CONCAT(CAST(c.datefirstdiag AS CHAR(10000) CHARACTER SET utf8)  ORDER BY c.datefirstdiag SEPARATOR ',') as dx_date
+,GROUP_CONCAT(CAST(c.chroniccode AS CHAR(10000) CHARACTER SET utf8)  ORDER BY c.datefirstdiag SEPARATOR ',') as dx
+,SPLIT_STR(GROUP_CONCAT(c.datefirstdiag ORDER BY c.datefirstdiag SEPARATOR ','),',',1) as datediag 
+FROM  person p
+LEFT JOIN personchronic c
+ON p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid 
+WHERE substr(REPLACE(chroniccode,'.',''),1,3) BETWEEN 'I10' AND 'I14' 
+GROUP BY p.pcucodeperson,p.pid
+
+=======================================================================================================================================
+# ICD10 - Chronic 
+            CVD                   I60 –I69
+            HT                    I10 – I15
+            Stroke                I64
+            IHD                   I20 – I25
+            DM                    E10 – E14
+            COPD                  J449
+            Asthma                J45 – J46
+            Emphysema             J43
+            Obesity               E66
+            Cancer                C00 – C97
+            TB                    A15 – A19
+            HIV/AIDS              B20 – B24
+            Cirrhosis of liver    K70.3 ,K71.7,K74
+            Chronic hepatitis     K73
+            Chronic Renal failure N18
+            Osteoarthritis        M15-M19,M47
+            Rheumatoid arthritis  M05 – M06
+
+=======================================================================================================================================
+# ORDER BY moo
+
+ORDER BY (substr(h.villcode,7,2) ),(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1)
+
+=======================================================================================================================================
