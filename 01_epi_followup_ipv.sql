@@ -28,4 +28,4 @@ ON t1.pcucodeperson=p.pcucodeperson AND t1.pid=p.pid
 WHERE p.birth  BETWEEN DATE_SUB(@startdate,INTERVAL 1 YEAR) AND DATE_SUB(@stoptdate,INTERVAL 1 YEAR)
 AND p.typelive in ('1','3')  and	 p.dischargetype='9'
 ) as t2
-HAVING IPV='0'
+HAVING IPV='0';
