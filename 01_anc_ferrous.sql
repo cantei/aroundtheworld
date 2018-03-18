@@ -12,4 +12,4 @@ ON d.drugcode=c.drugcode
 WHERE c.drugcode24='100497414002040330581606'
 AND v.visitdate BETWEEN '2016-10-01' AND '2017-09-30'
 HAVING age_month BETWEEN 6 AND 60 
-ORDER BY visitdate DESC
+ORDER BY visitdate DESC;
