@@ -1,6 +1,7 @@
 # 1 DM HbA1C > 7
 # 2 COPD or Asthma
-# 3 ADL low score 
+# 3 Chronic Renal failure
+# 4 ADL low score 
 SELECT t0.fullname,t0.birth,t0.age,t0.hno,t0.moo
 -- ,t0.ref,t0.grp
 ,GROUP_CONCAT(t0.ref ORDER BY t0.grp ) as factors
@@ -54,7 +55,29 @@ FROM
 		WHERE  p.typelive in('1','3')
 		AND p.dischargetype='9'
 		AND (NOT ISNULL(t1.copd) OR NOT ISNULL(t1.asthma))
-
+UNION 
+		-- Renalfailure
+		SELECT p.idcard
+		,concat(c.titlename,p.fname,'   ',p.lname) as fullname
+		,p.birth
+		,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
+		,h.hno,substr(h.villcode,7,2) as moo 
+		-- ,t1.copd,t1.asthma 
+		,'Renalfailure' as ref
+		,'3' as grp
+		,concat(v.fname,'  ',v.lname) as 'volanteer' 
+		FROM person p
+		INNER  JOIN ctitle c
+		ON p.prename=c.titlecode
+		INNER JOIN house h
+		ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode
+		LEFT JOIN person v
+		ON h.pcucodepersonvola=v.pcucodeperson and	h.pidvola=v.pid 
+		INNER JOIN me_chronic_multidisease t1
+		ON p.idcard=t1.idcard 
+		WHERE  p.typelive in('1','3')
+		AND p.dischargetype='9'
+		AND NOT ISNULL(t1.renalfailure) 
 		-- ADL  Low Score
 		UNION 
 		SELECT p.idcard
@@ -63,7 +86,7 @@ FROM
 		,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
 		,h.hno,substr(h.villcode,7,2) as moo 
 		,'สูงอายุติดเตียง' as ref
-		,'3' as grp
+		,'4' as grp
 		,concat(v.fname,'  ',v.lname) as 'volanteer' 
 		FROM person p 
 		LEFT JOIN ctitle ct ON p.prename=ct.titlecode
