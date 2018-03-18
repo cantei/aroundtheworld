@@ -95,4 +95,3 @@ GROUP BY p.pcucodeperson,p.pid
 ) as t
 HAVING INTERVAL1 < 28 OR  INTERVAL2 < 28 
 ORDER BY R23 DESC ;
-
