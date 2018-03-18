@@ -1,7 +1,7 @@
 # drop table 
-	DROP TABLE IF EXISTS `tmp_chronic_all` ;
+	DROP TABLE IF EXISTS `me_chronic_all_indiv` ;
 #create table
-		CREATE TABLE `tmp_chronic_all` (
+		CREATE TABLE `me_chronic_all_indiv` (
 			`pcucodeperson` char(5) NOT NULL default '',
 			`pid` int(11) NOT NULL,
 			`hcode` int(11) NOT NULL,
@@ -39,7 +39,7 @@
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # add profile 
-INSERT INTO `tmp_chronic_all` ( pcucodeperson,pid,hcode,prename,fname,lname,birth,sex,idcard,typelive,dischargetype,hnomoi,roadmoi,mumoi,telephoneperson)
+INSERT INTO `me_chronic_all_indiv` ( pcucodeperson,pid,hcode,prename,fname,lname,birth,sex,idcard,typelive,dischargetype,hnomoi,roadmoi,mumoi,telephoneperson)
 SELECT p.pcucodeperson,p.pid,p.hcode,p.prename,p.fname,p.lname,p.birth,p.sex,p.idcard,p.typelive,p.dischargetype,p.hnomoi,p.roadmoi,p.mumoi,p.telephoneperson
 FROM person	 p
 WHERE p.typelive in ('1','3') AND 
@@ -49,12 +49,12 @@ EXISTS
 	);
 
 #  add volanteer 
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 		SELECT t.*,h.pcucodepersonvola,h.pidvola
 		,concat(p.fname, '  ',p.lname) as volanteers
-		FROM tmp_chronic_all t 
+		FROM me_chronic_all_indiv t 
 		INNER JOIN house h
 		ON t.pcucodeperson=h.pcucodeperson AND t.hcode=h.hcode
 		LEFT JOIN person p
@@ -64,7 +64,7 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.volanteer=t1.volanteers;
 
 # add DM
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -80,7 +80,7 @@ SET t0.dm=t1.datediag;
 
 
 # add HT
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -96,7 +96,7 @@ SET t0.ht=t1.datediag;
 
 
 # add CVD
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -112,7 +112,7 @@ SET t0.cvd=t1.datediag;
 
 
 # add stroke
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -127,7 +127,7 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.stroke=t1.datediag;
 
 # add ihd
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -142,7 +142,7 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.ihd=t1.datediag;
 
 # add copd
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -157,7 +157,7 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.copd=t1.datediag;
 
 # add Asthma 
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -174,7 +174,7 @@ SET t0.asthma=t1.datediag;
 
 
 # add Emphysema        J43
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -190,7 +190,7 @@ SET t0.emphysema=t1.datediag;
 
 
 # add Obesity              E66
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -205,7 +205,7 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.obesity=t1.datediag;
 
 # add Cancer  C00 – C97
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -222,7 +222,7 @@ SET t0.cancer=t1.datediag;
 
 
 # add  HIV/AIDS           B20 – B24
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -239,7 +239,7 @@ SET t0.hiv=t1.datediag;
 
 
 # add   Cirrhosis of liver  K70.3 ,K71.7,K74
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 
@@ -255,7 +255,7 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.cirrhosis=t1.datediag;
 
 # add   Chronic hepatitis K73
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -271,7 +271,7 @@ SET t0.chepatitis=t1.datediag;
 
 # add    Chronic Renal failure  N18
 
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -288,7 +288,7 @@ SET t0.crenalfailure =t1.datediag;
 
 # add    Osteoarthritis      M15-M19,M47
 
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -304,7 +304,7 @@ SET t0.osteoarthritis=t1.datediag;
 
 # add     Rheumatoid arthritis   M05 – M06
 
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT p.pcucodeperson,p.pid
@@ -319,7 +319,7 @@ ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid
 SET t0.crheumatoid=t1.datediag;
 
 
-UPDATE tmp_chronic_all  t0
+UPDATE me_chronic_all_indiv  t0
 INNER JOIN
 (
 	SELECT CARD_ID,`NAME`,LNAME
@@ -341,6 +341,6 @@ SELECT idcard,dm,CASE WHEN dm IS NOT NULL
 THEN concat(DATE_FORMAT(dm,'%d-%M'),'-',(year(dm)+543))
 ELSE NULL
 END AS date_dm
-FROM tmp_chronic_all
+FROM me_chronic_all_indiv
 ORDER BY (mumoi*1),(SPLIT_STR(hnomoi,'/', 1)*1),(SPLIT_STR(hnomoi,'/',2)*1);
 */
