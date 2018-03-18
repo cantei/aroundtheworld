@@ -6,4 +6,4 @@ ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode AND p.pid=h.pid
 WHERE villcode='67010412'
 AND ISNULL(xgis)
 AND NOT ISNULL(p.pid)
-ORDER BY (SUBSTRING_INDEX(h.hno,'/',1)*1),(SUBSTRING_INDEX(h.hno,'/',2)*1)
+ORDER BY (SUBSTRING_INDEX(h.hno,'/',1)*1),(SUBSTRING_INDEX(h.hno,'/',2)*1);
