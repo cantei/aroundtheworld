@@ -335,7 +335,7 @@ ON t0.idcard=t1.CARD_ID
 SET t0.diag_2regist=t1.DIAG,t0.datediag_2regist=t1.DATE_DX;
 
 
-###### Report 
+###################################### Report ##################################################
 /*
 SELECT idcard,dm,CASE WHEN dm IS NOT NULL 
 THEN concat(DATE_FORMAT(dm,'%d-%M'),'-',(year(dm)+543))
