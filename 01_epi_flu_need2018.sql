@@ -357,6 +357,6 @@ OR NOT ISNULL(dm)
 ) 
 -- AND TIMESTAMPDIFF(YEAR,birth,'2018-05-01') > 65
 
-ORDER BY moo,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1)
+ORDER BY moo,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1);
 
 
