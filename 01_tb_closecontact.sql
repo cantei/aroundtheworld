@@ -1,11 +1,13 @@
-SELECT concat(c.titlename,t0.fname,'   ',t0.lname) as fullname
-,t0.birth,t0.age,t0.hno,t0.moo
+SELECT t0.idcard,concat(c.titlename,t0.fname,'   ',t0.lname) as fullname
+,t0.birth
+,if(t0.sex='1','ชาย','หญิง') as sex
+,t0.age,t0.hno,t0.moo
 ,'ผู้้สมผัสร่วมบ้าน' as ref 
 ,'1'  as grp
 ,concat(person.fname,'  ',person.lname) as 'อสม'
 FROM 
 (
-SELECT p.prename,p.fname,p.lname,p.birth
+SELECT p.idcard,p.prename,p.fname,p.lname,p.birth,p.sex
 ,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
 ,p.typelive,p.dischargetype
 ,h.hno,substr(h.villcode,7,2) as moo 
@@ -22,4 +24,3 @@ LEFT JOIN person
 ON t0.pcucodepersonvola=person.pcucodeperson AND t0.pidvola=person.pid
 LEFT JOIN ctitle c
 ON t0.prename=c.titlecode ;
-
