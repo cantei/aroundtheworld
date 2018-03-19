@@ -1,8 +1,5 @@
-# 1 DM HbA1C > 7
-# 2 COPD or Asthma
-# 3 Chronic Renal failure
-# 4 ADL low score 
-SELECT t0.fullname,t0.birth,t0.age,t0.hno,t0.moo
+SELECT t0.idcard,t0.fullname,t0.birth
+,if(t0.sex='1','ชาย','หญิง') as sex,t0.age,t0.hno,(t0.moo*1) as moo
 -- ,t0.ref,t0.grp
 ,GROUP_CONCAT(t0.ref ORDER BY t0.grp ) as factors
 ,t0.volanteer
@@ -10,7 +7,7 @@ FROM
 (
 		SELECT p.idcard
 		,concat(c.titlename,p.fname,'   ',p.lname) as fullname
-		,p.birth
+		,p.birth,p.sex
 		,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
 		,h.hno,substr(h.villcode,7,2) as moo 
 		-- ,t1.dm 
@@ -36,7 +33,7 @@ FROM
 		-- COPD  OR ASTHMA
 		SELECT p.idcard
 		,concat(c.titlename,p.fname,'   ',p.lname) as fullname
-		,p.birth
+		,p.birth,p.sex
 		,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
 		,h.hno,substr(h.villcode,7,2) as moo 
 		-- ,t1.copd,t1.asthma 
@@ -59,7 +56,7 @@ UNION
 		-- Renalfailure
 		SELECT p.idcard
 		,concat(c.titlename,p.fname,'   ',p.lname) as fullname
-		,p.birth
+		,p.birth,p.sex
 		,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
 		,h.hno,substr(h.villcode,7,2) as moo 
 		-- ,t1.copd,t1.asthma 
@@ -82,7 +79,7 @@ UNION
 		UNION 
 		SELECT p.idcard
 		, concat(ct.titlename,p.fname,'   ',p.lname) as fullname
-		,p.birth
+		,p.birth,p.sex
 		,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
 		,h.hno,substr(h.villcode,7,2) as moo 
 		,'สูงอายุติดเตียง' as ref
@@ -114,4 +111,4 @@ UNION
 		*/
 ) as t0
 GROUP BY t0.idcard 
-ORDER BY (moo*1),volanteer;
+ORDER BY (moo*1),volanteer
