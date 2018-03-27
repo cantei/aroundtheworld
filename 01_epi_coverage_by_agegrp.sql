@@ -26,11 +26,11 @@ FROM person p
 LEFT JOIN ctitle c
 ON p.prename=c.titlecode
 LEFT JOIN house h
-on p.hcode=h.hcode AND p.pcucodeperson=h.pcucodeperson 
+on p.hcode=h.hcode AND p.pcucodeperson=h.pcucode 
 LEFT JOIN visitepi e
 on p.pid=e.pid AND p.pcucodeperson=e.pcucodeperson 
 LEFT JOIN person v
-on v.hcode=h.hcode AND v.pcucodeperson=h.pcucodeperson 
+on v.hcode=h.hcode AND v.pcucodeperson=h.pcucode
 WHERE p.typelive in ('1','3') 
 AND p.dischargetype='9'
 AND p.nation='99'
@@ -68,11 +68,11 @@ FROM person p
 LEFT JOIN ctitle c
 ON p.prename=c.titlecode
 LEFT JOIN house h
-on p.hcode=h.hcode AND p.pcucodeperson=h.pcucodeperson 
+on p.hcode=h.hcode AND p.pcucodeperson=h.pcucode 
 LEFT JOIN visitepi e
 on p.pid=e.pid AND p.pcucodeperson=e.pcucodeperson 
 LEFT JOIN person v
-on v.hcode=h.hcode AND v.pcucodeperson=h.pcucodeperson 
+on v.hcode=h.hcode AND v.pcucodeperson=h.pcucode 
 WHERE p.typelive in ('1','3') 
 AND p.dischargetype='9'
 AND p.nation='99'
@@ -115,11 +115,11 @@ FROM person p
 LEFT JOIN ctitle c
 ON p.prename=c.titlecode
 LEFT JOIN house h
-on p.hcode=h.hcode AND p.pcucodeperson=h.pcucodeperson 
+on p.hcode=h.hcode AND p.pcucodeperson=h.pcucode 
 LEFT JOIN visitepi e
 on p.pid=e.pid AND p.pcucodeperson=e.pcucodeperson 
 LEFT JOIN person v
-on v.hcode=h.hcode AND v.pcucodeperson=h.pcucodeperson 
+on v.hcode=h.hcode AND v.pcucodeperson=h.pcucode 
 WHERE p.typelive in ('1','3') 
 AND p.dischargetype='9'
 AND p.nation='99'
@@ -161,11 +161,11 @@ FROM person p
 LEFT JOIN ctitle c
 ON p.prename=c.titlecode
 LEFT JOIN house h
-on p.hcode=h.hcode AND p.pcucodeperson=h.pcucodeperson 
+on p.hcode=h.hcode AND p.pcucodeperson=h.pcucode 
 LEFT JOIN visitepi e
 on p.pid=e.pid AND p.pcucodeperson=e.pcucodeperson 
 LEFT JOIN person v
-on v.hcode=h.hcode AND v.pcucodeperson=h.pcucodeperson 
+on v.hcode=h.hcode AND v.pcucodeperson=h.pcucode 
 WHERE p.typelive in ('1','3') 
 AND p.dischargetype='9'
 AND p.nation='99'
