@@ -4,9 +4,9 @@ group1
 SET @d1='2017-10-01';
 SET @d2='2018-09-30';
 
-SELECT 
+SELECT p.idcard
 -- p.pcucodeperson,p.pid
-concat(c.titlename,p.fname,'    ',p.lname) as fullname
+,concat(c.titlename,p.fname,'    ',p.lname) as fullname
 ,substr(h.villcode,7,2) as moo,h.hno
 ,p.birth
 ,TIMESTAMPDIFF(month,p.birth,CURDATE()) as agemonth
@@ -43,9 +43,9 @@ group2
 SET @d1='2017-10-01';
 SET @d2='2018-09-30';
 
-SELECT 
+SELECT p.idcard
 -- p.pcucodeperson,p.pid
-concat(c.titlename,p.fname,'    ',p.lname) as fullname
+,concat(c.titlename,p.fname,'    ',p.lname) as fullname
 ,substr(h.villcode,7,2) as moo,h.hno
 ,p.birth
 ,TIMESTAMPDIFF(month,p.birth,CURDATE()) as agemonth
@@ -88,9 +88,9 @@ group3
 SET @d1='2017-10-01';
 SET @d2='2018-09-30';
 
-SELECT 
+SELECT p.idcard
 -- p.pcucodeperson,p.pid
-concat(c.titlename,p.fname,'    ',p.lname) as fullname
+,concat(c.titlename,p.fname,'    ',p.lname) as fullname
 ,substr(h.villcode,7,2) as moo,h.hno
 ,p.birth
 ,TIMESTAMPDIFF(month,p.birth,CURDATE()) as agemonth
@@ -132,9 +132,9 @@ group 5
 SET @d1='2017-10-01';
 SET @d2='2018-09-30';
 
-SELECT 
+SELECT p.idcard
 -- p.pcucodeperson,p.pid
-concat(c.titlename,p.fname,'    ',p.lname) as fullname
+,concat(c.titlename,p.fname,'    ',p.lname) as fullname
 ,substr(h.villcode,7,2) as moo,h.hno
 ,p.birth
 ,TIMESTAMPDIFF(month,p.birth,CURDATE()) as agemonth
