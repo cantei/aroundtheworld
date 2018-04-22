@@ -1,4 +1,3 @@
-
 -- NOT need house because  house is not completed
 
 SET  @thisyear=YEAR(CURDATE()) ;
