@@ -1,3 +1,6 @@
+# รายชื่อเด็กผิดนัดทั้งหมด
+# ส่งจดหมายตาม  หรือขอดูสมุดสีชมพู
+
 SELECT p.pcucodeperson,p.pid
 ,p.idcard
 ,CONCAT(c.titlename,p.fname,'   ',p.lname) as fullname
