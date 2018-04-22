@@ -18,4 +18,4 @@ LEFT JOIN ctitle c
 ON p.prename=c.titlecode
 WHERE e.pcucode=e.hosservice
 AND year(e.dateepi)=@thisyear AND month(e.dateepi)=@thismonth
-GROUP BY p.pcucodeperson,p.pid
+GROUP BY p.pcucodeperson,p.pid;
