@@ -1,4 +1,4 @@
--- ผิดนัด
+-- ผิดนัดในเดือนใดๆ
 SET @y='2017';
 SET @m='03';
 SELECT DISTINCT a.pcucodeperson,a.pid  
