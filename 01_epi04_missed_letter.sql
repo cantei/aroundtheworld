@@ -1,6 +1,9 @@
 # รายชื่อเด็กผิดนัดทั้งหมด
 # ส่งจดหมายตาม  หรือขอดูสมุดสีชมพู
 
+# รายชื่อเด็กผิดนัดทั้งหมด
+# ส่งจดหมายตาม  หรือขอดูสมุดสีชมพู
+
 SELECT p.pcucodeperson,p.pid
 ,p.idcard
 ,CONCAT(c.titlename,p.fname,'   ',p.lname) as fullname
@@ -8,7 +11,7 @@ SELECT p.pcucodeperson,p.pid
 ,TIMESTAMPDIFF(MONTH,p.birth,CURDATE()) as  'agemonth'
 ,p.mother as 'มารดา'
 ,GROUP_CONCAT(t.items ORDER BY (sequence*1) ASC) as items
-,h.hno,substr(h.villcode,7,2) as moo 
+,concat(h.hno,'  ','หมู่ที่','  ',substr(h.villcode,8,1))  as addess
 ,concat(v.fname,'  ',v.lname) as 'volanteer'
 ,t1.date_appoint
 FROM 
