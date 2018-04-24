@@ -1,13 +1,11 @@
 # รายชื่อเด็กผิดนัดทั้งหมด
 # ส่งจดหมายตาม  หรือขอดูสมุดสีชมพู
 
-# รายชื่อเด็กผิดนัดทั้งหมด
-# ส่งจดหมายตาม  หรือขอดูสมุดสีชมพู
-
-SELECT p.pcucodeperson,p.pid
+SELECT h.villcode,p.pcucodeperson,p.pid
 ,p.idcard
 ,CONCAT(c.titlename,p.fname,'   ',p.lname) as fullname
 ,p.birth
+,concat(DATE_FORMAT(p.birth,'%d-%m'),'-',year(p.birth)+543) as born
 ,TIMESTAMPDIFF(MONTH,p.birth,CURDATE()) as  'agemonth'
 ,p.mother as 'มารดา'
 ,GROUP_CONCAT(t.items ORDER BY (sequence*1) ASC) as items
