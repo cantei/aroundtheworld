@@ -39,7 +39,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode NOT IN ('DHB1','DTP1')  AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode  IN ('DHB1','DTP1','D21','D51')  AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- OPV1
 		UNION 
@@ -67,7 +67,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode NOT IN ('DHB2','DTP2') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode  IN ('DHB2','DTP2','D22','D52') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- OPV2
@@ -113,7 +113,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode NOT IN ('DHB2','DTP3') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode  IN ('DHB3','DTP3','D23','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- OPV3
@@ -161,7 +161,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode NOT IN ('J11','JE1') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode  IN ('J11','JE1') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- DTP4
 		UNION 
@@ -175,7 +175,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode='DTP4' AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('DTP4','D24','D54') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 		
 	-- OPV4
@@ -234,7 +234,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode='DTP5' AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('DTP5','D25','D55') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- OPV5
 		UNION 
@@ -271,6 +271,8 @@ HAVING NOT ISNULL(date_appoint)
 ) as t1 
 ON t.pcucodeperson=t1.pcucodeperson AND t.pid=t1.pid
 GROUP BY p.pcucodeperson,p.pid
+-- HAVING villcode='84120704'
+-- HAVING fullname LIKE '%โคกะทิง%'
 -- HAVING items like '%LAJE%'
 -- HAVING ISNULL(date_appoint)
 ORDER BY h.villcode,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1)
