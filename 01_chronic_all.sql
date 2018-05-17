@@ -13,9 +13,8 @@
 			`idcard` varchar(13) default NULL,
 			`typelive` varchar(1) default NULL,
 			`dischargetype` varchar(1) default NULL,
-			`hnomoi` varchar(75) default NULL,
-			`roadmoi` varchar(50) default NULL,
-			`mumoi` char(2) default NULL,
+			`hno` varchar(75) default NULL,
+			`village` char(2) default NULL,
 			`telephoneperson` varchar(35) default NULL,
 			`volanteer` varchar(100) default NULL,
 			`dm` date default NULL,
@@ -39,9 +38,12 @@
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # add profile 
-INSERT INTO `me_chronic_all_indiv` ( pcucodeperson,pid,hcode,prename,fname,lname,birth,sex,idcard,typelive,dischargetype,hnomoi,roadmoi,mumoi,telephoneperson)
-SELECT p.pcucodeperson,p.pid,p.hcode,p.prename,p.fname,p.lname,p.birth,p.sex,p.idcard,p.typelive,p.dischargetype,p.hnomoi,p.roadmoi,p.mumoi,p.telephoneperson
+INSERT INTO `me_chronic_all_indiv` ( pcucodeperson,pid,hcode,prename,fname,lname,birth,sex,idcard,typelive,dischargetype,hno,village,telephoneperson)
+SELECT p.pcucodeperson,p.pid,p.hcode,p.prename,p.fname,p.lname,p.birth,p.sex,p.idcard,p.typelive,p.dischargetype,p.telephoneperson
+,h.hno,substr(h.villcode,8,1) as  village
 FROM person	 p
+LEFT JOIN house h 
+ON p.pcucodeperson=h.pcucode AND p.pid=h.pid 
 WHERE p.typelive in ('1','3') AND 
 EXISTS 
 	(
@@ -317,30 +319,3 @@ INNER JOIN
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
 SET t0.crheumatoid=t1.datediag;
-
-
-UPDATE me_chronic_all_indiv  t0
-INNER JOIN
-(
-	SELECT CARD_ID,`NAME`,LNAME
-		,HNO,VILLAGE_ID
-		-- ,DIAG,DATE_DX,HCODE
-		,GROUP_CONCAT(DIAG ORDER BY DATE_DX SEPARATOR ',' ) as DIAG
-		,GROUP_CONCAT(DATE_DX ORDER BY DATE_DX SEPARATOR ',' ) as DATE_DX
-		,GROUP_CONCAT(HCODE ORDER BY DATE_DX SEPARATOR ',' ) as HCODE
-		FROM me_unknownchronic 
-		GROUP BY CARD_ID
-) as t1
-ON t0.idcard=t1.CARD_ID
-SET t0.diag_2regist=t1.DIAG,t0.datediag_2regist=t1.DATE_DX;
-
-
-###################################### Report ##################################################
-/*
-SELECT idcard,dm,CASE WHEN dm IS NOT NULL 
-THEN concat(DATE_FORMAT(dm,'%d-%M'),'-',(year(dm)+543))
-ELSE NULL
-END AS date_dm
-FROM me_chronic_all_indiv
-ORDER BY (mumoi*1),(SPLIT_STR(hnomoi,'/', 1)*1),(SPLIT_STR(hnomoi,'/',2)*1);
-*/
