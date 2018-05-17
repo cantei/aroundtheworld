@@ -6,7 +6,7 @@ SELECT p.pcucodeperson as pcucode
 ,p.idcard,p.birth
 ,p.pid,p.typelive,p.dischargetype  
 ,GROUP_CONCAT(d.diagcode) as diag 
-,GROUP_CONCAT(v.visitdate) as visit 
+,GROUP_CONCAT(CAST(v.visitdate AS CHAR(10000) CHARACTER SET utf8)  ORDER BY v.visitdate SEPARATOR ',') as dx_date
 ,h.hno,substr(h.villcode,8,1) village 
 ,concat(a.fname,'    ',a.lname) as 'volanteer'
 FROM person p
