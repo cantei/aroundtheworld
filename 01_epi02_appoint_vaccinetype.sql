@@ -1,4 +1,4 @@
-
+# เบิกวัคซีน
 -- Appointment VaccineType  ON Any Month
 
 SET  @y=YEAR(CURDATE()) ;
