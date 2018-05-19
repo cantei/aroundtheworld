@@ -1,7 +1,7 @@
 # จำนวนผู้รับบริการ จำแนกรายวัคซีน (ใบเบิกวัคซัน)
 
 SET  @thisyear=YEAR(CURDATE()) ;
-SET  @thismonth=(MONTH(CURDATE())-0) ;
+SET  @thismonth=MONTH(CURDATE()) ;
 SELECT a.dateepi
 ,sum(if(vaccinecode in ('DHB1','DHB2','DHB3'),1,0)) as DHB
 ,sum(if(vaccinecode in ('OPV1','OPV2','OPV3','OPV4','OPV5'),1,0)) as OPV
@@ -15,5 +15,6 @@ FROM visitepi a
 INNER JOIN person p
 ON p.pcucodeperson=a.pcucodeperson AND p.pid=a.pid
 AND p.pcucodeperson=a.hosservice
-WHERE year(a.dateepi)=@thisyear AND month(a.dateepi)=@thismonth
-GROUP BY a.dateepi;
+-- WHERE year(a.dateepi)=@thisyear AND month(a.dateepi)=(@thismonth-1)
+GROUP BY a.dateepi
+ORDER BY a.dateepi DESC ;
