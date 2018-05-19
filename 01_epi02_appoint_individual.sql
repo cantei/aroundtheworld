@@ -1,3 +1,4 @@
+# Appointment Individual
 # FOR STEP1 CHECK Temp,BW,heigth
 
 SET  @thisyear=YEAR(CURDATE()) ;
@@ -26,5 +27,4 @@ ON h.pcucodepersonvola=v.pcucodeperson and	h.pidvola=v.pid
 WHERE YEAR(a.dateappoint)=@thisyear
 AND MONTH (a.dateappoint)=(@thismonth+1)
 GROUP BY p.pcucodeperson,p.pid
-HAVING need_vaccine like '%D%'
 ORDER BY h.villcode,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1)
