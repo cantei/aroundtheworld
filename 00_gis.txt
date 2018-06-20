@@ -1,0 +1,91 @@
+<?php 
+	$objConnect = mysql_connect("127.0.0.1:3333","root","123456");
+	$objDB = mysql_select_db("jhcisdb");
+	mysql_query("SET NAMES utf8");
+	
+?>
+<!DOCTYPE HTML>  
+<html>
+<head>
+
+</head>
+<body>  
+
+<?php
+// define variables and set to empty values
+$fullname = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $fullname = str_replace(' ', '', test_input($_POST["fullname"]));
+}
+
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+?>
+
+<h2>PHP Form Validation Example</h2>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+  ค้นหา : <input type="text" name="fullname">
+  <br><br>
+
+  <input type="submit" name="submit" value="ตกลง">  
+</form>
+
+
+
+
+</body>
+</html>
+	
+	
+<?php
+
+// echo $fullname;
+/*
+	$sql="SELECT t.*,if(hno=hnomoi,1,null) as chk
+			FROM 
+			(
+				SELECT h.hno,substr(h.villcode,8,1) as village
+				,p.pcucodeperson,p.pid,concat(p.fname,'   ',p.lname) as headhouse
+				,h.xgis as lat,h.ygis as lng
+				,h.pcucodepersonvola,h.pidvola,concat(v.fname,'   ',v.lname) as volanteer
+				,v.hnomoi
+				FROM house h 
+				INNER JOIN person p 
+				ON h.pcucode=p.pcucodeperson AND h.hcode=p.hcode AND h.pid=p.pid 
+				LEFT JOIN person v 
+				ON h.pcucodepersonvola=v.pcucodeperson AND h.pidvola=v.pid
+				ORDER BY h.villcode,volanteer,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1)
+			) as t  
+			HAVING replace(volanteer, ' ', '') LIKE '%{$fullname}%' ";
+	
+*/
+mysql_query('SET NAMES utf8;');
+Header('Content-Type: application/json; charset=UTF-8');
+$result = mysql_query("SELECT t.*,if(hno=hnomoi,1,null) as chk
+			FROM 
+			(
+				SELECT h.hno,substr(h.villcode,8,1) as village
+				,p.pcucodeperson,p.pid,concat(p.fname,'   ',p.lname) as headhouse
+				,h.xgis as lat,h.ygis as lng
+				,h.pcucodepersonvola,h.pidvola,concat(v.fname,'   ',v.lname) as volanteer
+				,v.hnomoi
+				FROM house h 
+				INNER JOIN person p 
+				ON h.pcucode=p.pcucodeperson AND h.hcode=p.hcode AND h.pid=p.pid 
+				LEFT JOIN person v 
+				ON h.pcucodepersonvola=v.pcucodeperson AND h.pidvola=v.pid
+				ORDER BY h.villcode,volanteer,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1)
+			) as t  
+			HAVING replace(volanteer, ' ', '') LIKE '%{$fullname}%' ");
+
+$jsonData = array();
+while ($array = mysql_fetch_row($result)) {
+    $jsonData[] = $array;
+}
+echo json_encode($jsonData);
+?>
