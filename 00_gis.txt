@@ -87,5 +87,6 @@ $jsonData = array();
 while ($array = mysql_fetch_row($result)) {
     $jsonData[] = $array;
 }
-echo json_encode($jsonData);
+ $json = json_encode($jsonData, JSON_UNESCAPED_UNICODE);
+echo $json;
 ?>
