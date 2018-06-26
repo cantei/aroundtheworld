@@ -1,13 +1,4 @@
-# รายชื่อเด็กผิดนัดทั้งหมด
-# ส่งจดหมายตาม  หรือขอดูสมุดสีชมพู
 
-SELECT h.villcode,p.pcucodeperson,p.pid
-,p.idcard
-,CONCAT(c.titlename,p.fname,'   ',p.lname) as fullname
-,p.birth
-,concat(DATE_FORMAT(p.birth,'%d-%m'),'-',year(p.birth)+543) as born
-,TIMESTAMPDIFF(MONTH,p.birth,CURDATE()) as  'agemonth'
-,p.mother as 'มารดา'
 ,GROUP_CONCAT(t.items ORDER BY (sequence*1) ASC) as items
 ,concat(h.hno,'  ','หมู่ที่','  ',substr(h.villcode,8,1))  as addess
 ,concat(v.fname,'  ',v.lname) as 'volanteer'
@@ -53,7 +44,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode='OPV1' AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('OPV1','D41','D51') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- DHB2
 		UNION 
@@ -82,7 +73,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('OPV2','D12','D22','D32','D42','D52') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('OPV2','D42','D52') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- IPV
 	-- IPV เริ่มใช้ธันวาคม 2558 ฉะนั้น เด็กที่เกิดตั้งแต่ 2015-08-01 
@@ -98,7 +89,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode='IPV-P' AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('IPV-P','D41','D51','D42','D52','D43','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- DHB3
@@ -128,7 +119,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('OPV3','D13','D23','D33','D43','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('OPV3','D43','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- MMR1
