@@ -1,6 +1,14 @@
+# รายชื่อเด็กผิดนัดทั้งหมด
+# ส่งจดหมายตาม  หรือขอดูสมุดสีชมพู
 
+SELECT p.pcucodeperson,p.pid
+,p.idcard
+,CONCAT(c.titlename,p.fname,'   ',p.lname) as fullname
+,p.birth
+,TIMESTAMPDIFF(MONTH,p.birth,CURDATE()) as  'agemonth'
+,p.mother as 'parent'
 ,GROUP_CONCAT(t.items ORDER BY (sequence*1) ASC) as items
-,concat(h.hno,'  ','หมู่ที่','  ',substr(h.villcode,8,1))  as addess
+,h.hno,substr(h.villcode,7,2) as moo 
 ,concat(v.fname,'  ',v.lname) as 'volanteer'
 ,t1.date_appoint
 FROM 
@@ -30,7 +38,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode  IN ('DHB1','DTP1','D11','D21','D31','D41','D51')  AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode NOT IN ('D11','D21','D31','D41','D51','DHB1','DTP1')  AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- OPV1
 		UNION 
@@ -44,7 +52,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('OPV1','D41','D51') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('D11','D21','D31','D41','D51','OPV1') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- DHB2
 		UNION 
@@ -58,7 +66,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode  IN ('DHB2','DTP2','D12','D22','D32','D42','D52') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode NOT IN ('D12','D22','D32','D42','D52','DHB2','DTP2') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- OPV2
@@ -73,7 +81,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('OPV2','D42','D52') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('D12','D22','D32','D42','D52','OPV2') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- IPV
 	-- IPV เริ่มใช้ธันวาคม 2558 ฉะนั้น เด็กที่เกิดตั้งแต่ 2015-08-01 
@@ -89,7 +97,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('IPV-P','D41','D51','D42','D52','D43','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode='IPV-P' AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- DHB3
@@ -104,7 +112,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode  IN ('DHB3','DTP3','D13','D23','D33','D43','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode NOT IN ('D13','D23','D33','D43','D53','DHB2','DTP3') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- OPV3
@@ -119,7 +127,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('OPV3','D43','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('D13','D23','D33','D43','D53','OPV3') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- MMR1
@@ -152,7 +160,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode  IN ('J11','JE1') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode NOT IN ('J11','JE1') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- DTP4
 		UNION 
@@ -166,7 +174,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('DTP4','D24','D54','D14','D24','D34','D44','D54') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in('D14','D24','D34','D44','D54','DTP4') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 		
 	-- OPV4
@@ -181,7 +189,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('OPV4','D24','D54','D14','D24','D34','D44','D54') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('D14','D24','D34','D44','D54','OPV4') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- MMR2
@@ -225,7 +233,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('DTP5','D25','D55') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('D15','D25','D35','D45','D55','DTP5') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 	-- OPV5
 		UNION 
@@ -239,7 +247,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode in ('OPV5','D25','D55','D15','D25','D35','D45','D55') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('D15','D25','D35','D45','D55','OPV5') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 ) 
 as t
@@ -262,9 +270,6 @@ HAVING NOT ISNULL(date_appoint)
 ) as t1 
 ON t.pcucodeperson=t1.pcucodeperson AND t.pid=t1.pid
 GROUP BY p.pcucodeperson,p.pid
--- HAVING villcode='84120704'
--- HAVING fullname LIKE '%โคกะทิง%'
 -- HAVING items like '%LAJE%'
 -- HAVING ISNULL(date_appoint)
--- ORDER BY h.villcode,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1)
-ORDER BY agemonth
+ORDER BY h.villcode,(SPLIT_STR(hno,'/', 1)*1),(SPLIT_STR(hno,'/',2)*1)
