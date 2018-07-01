@@ -25,11 +25,11 @@ catch(PDOException $e)
 	}
 
 $sql="SELECT e.DISEASECODE,e.DISEASENAME,e.FULLNAME,e.ADDRESS,e.SEX,year(e.DAY4) as YEARSEE
-,h.xgis as lng,h.ygis as lat 
-FROM epidemtotal e
-LEFT JOIN house  h 
-ON	 e.ADDRCODE=h.villcode AND e.HNO=h.hno 
-WHERE DISEASECODE='".$str."'";
+		,h.xgis as lng,h.ygis as lat 
+		FROM epidemtotal e
+		LEFT JOIN house  h 
+		ON	 e.ADDRCODE=h.villcode AND e.HNO=h.hno 
+		WHERE DISEASECODE='".$str."'";
 $stm=$conn->prepare($sql) ;
 try{
 	$stm->execute();
@@ -39,10 +39,11 @@ try{
 $results=$stm->fetchAll(PDO::FETCH_ASSOC);
 $json = json_encode($results, JSON_UNESCAPED_UNICODE);
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-<title>TB Outcomes Map</title>
+<title>เขตรับผิดชอบของ อสม.</title>
 <meta name="viewport" content="initial-scale=1.0">
 <meta charset="utf-8">
 <style>
@@ -53,19 +54,37 @@ $json = json_encode($results, JSON_UNESCAPED_UNICODE);
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
-        height:100%;
+        height: 100%;
         margin: 0;
         padding: 0;
       }
-	  #container
-		{
-			height: 90px;
-			line-height: 90px;
-			text-align: center;
-			border: 2px dashed #FFFFFF;
-		}
-			
-</style>
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 10%;
+		width: 300px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 0px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+		font-size: 12px;
+        line-height: 27px;
+        padding-left: 10px;
+      }
+	   #info {
+        background-color: #fff;
+		text-align: center;
+		position:absolute;
+		height: 190px;
+		width: 100px;
+		right:10px;
+		top  :10px;
+		padding: 10px;
+		padding-right: 20px;
+      }
+    </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body onload="initialize()">
@@ -76,13 +95,14 @@ $json = json_encode($results, JSON_UNESCAPED_UNICODE);
 		
 		function initialize() {
 			var mapOptions = {
-				center: new google.maps.LatLng(8.868513946698467,99.37970370054245),
+				center: new google.maps.LatLng(8.880654048697483,99.38237249851227),
 				zoom: 15,
 				mapTypeId: google.maps.MapTypeId.roadmap 
 			};
 			map = new google.maps.Map(document.getElementById("map"),
 				mapOptions
 			);
+			
 			var data = '<?=$json?>';
 			var jsonObj = JSON.parse(data);
 
@@ -128,13 +148,18 @@ $json = json_encode($results, JSON_UNESCAPED_UNICODE);
 						this.info.open(marker_map, this);
 						// Note: If you call open() without passing a marker, the InfoWindow will use the position specified upon construction through the InfoWindowOptions object literal.
 					});
-			} // end loop 
-			
+			} // end loop marker
 
-		} // end initialize 
+			
+			
+		} // end initialize a
 </script>
 
 <div id='container'>
+
+</div>
+<div id="map"></div>
+<div id='floating-panel'>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <td id='options'>กรุณาเลือกโรค
 <?php 
@@ -147,35 +172,32 @@ $stm->execute();
 $data = $stm->fetchAll(PDO::FETCH_ASSOC);
 // $data = iconv("utf-8", "utf-8//ignore",$stm->fetchAll(PDO::FETCH_ASSOC)); 
 ?> 
-	<select name="str" style="width:70px">    <option value='-1'></option>        
+	<select name="str" style="width:150px">    <option value='-1'></option>        
 			<?php 
+			
 			foreach($data  as $row)
 			{       
 				  echo "<option value=\"".$row["DISEASECODE"]."\"";
 				  if($_POST['str'] == $row['DISEASENAME'])
 						echo 'selected';
-				  echo ">".$row['DISEASENAME']."</option>";        
+						echo ">".$row['DISEASENAME']."</option>";
+				  
 			}  
-		?>  
+			?>  
 </td>
 <input type="submit" name="submit" value="OK" />
 </form>
 </div>
-<div id="map"></div>
 <div id="demo"> 
 </div>
 <div>
-<?php 
-// echo $str.'<br>';
-// echo $sql.'<br>';
-// print_r($results);
-// echo $json;
- 
-?>
-<img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png"> ปี  2560<br>
-<img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png"> ปี  2561<br>
+<div id="info">
 
-
+<img src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"> ปี  2557<br>
+<img src="http://maps.google.com/mapfiles/ms/icons/purple-dot.png"> ปี  2558<br>
+<img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png"> ปี  2559<br>
+<img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png"> ปี  2560<br>
+<img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"> ปี  2561<br>
 </div>
 </body>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=mykey&callback=initMap"></script>
