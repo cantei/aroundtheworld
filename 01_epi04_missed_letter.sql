@@ -97,7 +97,7 @@ FROM
 		AND NOT EXISTS 
 		(
 		SELECT * FROM visitepi e
-		WHERE e.vaccinecode='IPV-P' AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
+		WHERE e.vaccinecode in ('IPV-P','D41','D42','D43','D51','D52','D53') AND p.pcucodeperson=e.pcucodeperson AND p.pid=e.pid 
 		)
 
 	-- DHB3
