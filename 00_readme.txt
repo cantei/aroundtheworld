@@ -44,4 +44,8 @@ GROUP BY p.pcucodeperson,p.pid
 ORDER BY (substr(h.villcode,7,2) ),(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1)
 
 =======================================================================================================================================
-
+#  ชื่อจริงๆ ไม่มีวงเล็บ
+SELECT fname
+,LEFT(fname,LOCATE('(',fname) - 1) as realname
+FROM person 
+where fname LIKE '%(%'
