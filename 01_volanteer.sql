@@ -3,7 +3,7 @@ FROM
 (
 SELECT h.pcucode
 -- ,h.pcucodeperson,h.pid
-,h.hno
+,concat('เลขที่  ' ,h.hno) as hno
 ,substr(h.villcode,8,1) as village
 ,concat(o.fname,' ',o.lname) as houseowner
 ,h.pcucodepersonvola,h.pidvola
@@ -17,6 +17,6 @@ LEFT JOIN person p
 ON h.pcucode=p.pcucodeperson AND h.hcode=p.hcode
 WHERE p.typelive in ('1','3')
 GROUP BY h.villcode,h.hno,p.idcard
+ORDER BY h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1)
 ) as t 
-where village='4'
-ORDER BY t.village,(SPLIT_STR(t.hno,'/', 1)*1),(SPLIT_STR(t.hno,'/',2)*1)
+where village='7'
