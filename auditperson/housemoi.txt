@@ -1,0 +1,61 @@
+	# update mumoi  isnull or <> 2 digit  n=8499
+		#1 SELECT count(*) as n
+		FROM	person p
+		WHERE (LENGTH(p.mumoi)=1 OR ISNULL(mumoi)); 
+		#2 UPDATE person 
+			SET mumoi=concat('0',mumoi) 
+			WHERE  LENGTH(mumoi)=1;
+		#3 UPDATE person 
+			SET mumoi='00'
+			WHERE   ISNULL(mumoi);
+	# type 1+2  moi regist in 841207     		not in = 55
+			SELECT concat(v.fname,' ',v.lname) as volanteer,concat(' ',h.hno) as homeno,substr(h.villcode,7,2) as homevilage
+			,p.pid,p.fname,p.lname,p.typelive
+			,p.hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)as villagemoi
+			,t.hno as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as villageaddress
+
+			FROM person p
+			LEFT JOIN house	h
+			ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode AND p.pid=h.pid
+			LEFT JOIN personaddresscontact t
+			ON p.pcucodeperson=t.pcucodeperson AND p.pid=t.pid 
+			LEFT JOIN person v
+			ON v.pcucodeperson=h.pcucodeperson AND v.pid=h.pidvola 
+			WHERE p.typelive IN ('1','2')
+			AND concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi)<>'841207'
+			ORDER BY h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1);
+
+	
+	# type 3+4  moi regist not  in 841207		in=3
+			SELECT concat(v.fname,' ',v.lname) as volanteer,concat(' ',h.hno) as homeno,substr(h.villcode,7,2) as homevilage
+			,p.pid,p.fname,p.lname,p.typelive
+			,p.hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)as villagemoi
+			,t.hno as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as villageaddress
+
+			FROM person p
+			LEFT JOIN house	h
+			ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode AND p.pid=h.pid
+			LEFT JOIN personaddresscontact t
+			ON p.pcucodeperson=t.pcucodeperson AND p.pid=t.pid 
+			LEFT JOIN person v
+			ON v.pcucodeperson=h.pcucodeperson AND v.pid=h.pidvola 
+			WHERE p.typelive IN ('3','4')
+			AND concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi)='841207' AND p.mumoi<>'00'
+			ORDER BY h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1);
+
+	# type 1,2 villagecode=concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)   	!=7
+			SELECT concat(v.fname,' ',v.lname) as volanteer,concat(' ',h.hno) as homeno,substr(h.villcode,7,2) as homevilage
+			,p.pid,p.fname,p.lname,p.typelive
+			,p.hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)as villagemoi
+			,t.hno as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as villageaddress
+			FROM person p
+			LEFT JOIN house	h
+			ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode AND p.pid=h.pid
+			LEFT JOIN personaddresscontact t
+			ON p.pcucodeperson=t.pcucodeperson AND p.pid=t.pid 
+			LEFT JOIN person v
+			ON v.pcucodeperson=h.pcucodeperson AND v.pid=h.pidvola 
+			WHERE p.typelive IN ('1','2')
+			AND h.villcode<>concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)
+			ORDER BY h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1);	
+	# type 3,4 villagecode<>concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)   	then =0
