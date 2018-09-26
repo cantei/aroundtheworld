@@ -49,3 +49,5 @@ SELECT fname
 ,LEFT(fname,LOCATE('(',fname) - 1) as realname
 FROM person 
 where fname LIKE '%(%'
+# fix hoc to edit markhouse.php
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCTeUbgScU5eMv6Q2j2Ngh-2ea2K6enh0w"></script>
