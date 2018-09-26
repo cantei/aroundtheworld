@@ -1,0 +1,67 @@
+
+	# update mu chage to 2 digit    n=7485
+		SELECT mu
+		FROM	personaddresscontact p
+		WHERE (LENGTH(p.mu)=1 OR ISNULL(mu));
+		
+		UPDATE personaddresscontact  
+			SET mu=concat('0',mu) 
+			WHERE  LENGTH(mu)=1;
+		
+			UPDATE personaddresscontact 
+			SET mu='00'
+			WHERE   ISNULL(mu);
+		
+		
+	# type 1  n=35
+		SELECT concat(v.fname,' ',v.lname) as volanteer,concat(' ',h.hno) as homeno,substr(h.villcode,7,2) as homevilage
+			,p.pid,p.fname,p.lname,p.typelive
+			,p.hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)as villagemoi
+			,t.hno as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as villageaddress
+			FROM person p
+			LEFT JOIN house	h
+			ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode AND p.pid=h.pid
+			LEFT JOIN personaddresscontact t
+			ON p.pcucodeperson=t.pcucodeperson AND p.pid=t.pid 
+			LEFT JOIN person v
+			ON v.pcucodeperson=h.pcucodeperson AND v.pid=h.pidvola 
+			WHERE p.typelive IN ('1')
+				AND (
+				h.villcode<>concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)
+				OR  h.villcode<>concat(t.provcode,t.distcode,t.subdistcode,t.mu) 
+				)
+			ORDER BY h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1);
+			
+	# TYPE 2 n=945
+			SELECT concat(v.fname,' ',v.lname) as volanteer,concat(' ',h.hno) as homeno,substr(h.villcode,7,2) as homevilage
+			,p.pid,p.fname,p.lname,p.typelive
+			,p.hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)as villagemoi
+			,t.hno as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as villageaddress
+			FROM person p
+			LEFT JOIN house	h
+			ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode AND p.pid=h.pid
+			LEFT JOIN personaddresscontact t
+			ON p.pcucodeperson=t.pcucodeperson AND p.pid=t.pid 
+			LEFT JOIN person v
+			ON v.pcucodeperson=h.pcucodeperson AND v.pid=h.pidvola 
+			WHERE p.typelive IN ('2') 
+				AND (			h.villcode=concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)
+				OR  concat(t.provcode,t.distcode,t.subdistcode)='841207' )
+			ORDER BY h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1);
+			
+		# TYPE 3  n=17
+			SELECT concat(v.fname,' ',v.lname) as volanteer,concat(' ',h.hno) as homeno,substr(h.villcode,7,2) as homevilage
+			,p.pid,p.fname,p.lname,p.typelive
+			,p.hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)as villagemoi
+			,t.hno as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as villageaddress
+			FROM person p
+			LEFT JOIN house	h
+			ON p.pcucodeperson=h.pcucode AND p.hcode=h.hcode AND p.pid=h.pid
+			LEFT JOIN personaddresscontact t
+			ON p.pcucodeperson=t.pcucodeperson AND p.pid=t.pid 
+			LEFT JOIN person v
+			ON v.pcucodeperson=h.pcucodeperson AND v.pid=h.pidvola 
+			WHERE p.typelive IN ('3') 
+			AND (h.villcode=concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi)
+			OR concat(t.provcode,t.distcode,t.subdistcode)<>'841207' )
+			ORDER BY h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1);	
