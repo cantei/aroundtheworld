@@ -44,7 +44,7 @@ SELECT p.pcucodeperson,p.pid,p.hcode,p.prename,p.fname,p.lname,p.birth,p.sex,p.i
 FROM person	 p
 LEFT JOIN house h 
 ON p.pcucodeperson=h.pcucode AND p.pid=h.pid 
-WHERE p.typelive in ('1','3') AND 
+WHERE p.typelive in ('1','2','3') AND 
 EXISTS 
 	(
 		SELECT * FROM personchronic c WHERE p.pcucodeperson=c.pcucodeperson AND p.pid=c.pid
