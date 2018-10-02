@@ -10,10 +10,10 @@ SELECT concat(c.titlename,p.fname,'    ',p.lname) as fullname
 ,p.telephoneperson
 ,'' as school
 ,'' as hosservice
-
 ,concat(v.fname,'    ',v.lname) as 'volanteer'
 ,SPLIT_STR(GROUP_CONCAT(CAST(e.dateepi AS CHAR(10000) CHARACTER SET utf8)  ORDER BY e.dateepi DESC SEPARATOR ','),',',1) as lastvisit 
 ,SPLIT_STR(GROUP_CONCAT(CAST(e.vaccinecode AS CHAR(10000) CHARACTER SET utf8)  ORDER BY e.dateepi DESC SEPARATOR ','),',',1) as lastitems 
+,if((SPLIT_STR(GROUP_CONCAT(CAST(e.hosservice AS CHAR(10000) CHARACTER SET utf8)  ORDER BY e.dateepi DESC SEPARATOR ','),',',1))='09248','ที่นี่','ที่อื่น') as lasthserv
 FROM person p
 LEFT JOIN ctitle c
 ON p.prename=c.titlecode
