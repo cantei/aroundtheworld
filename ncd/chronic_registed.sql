@@ -1,15 +1,18 @@
-SELECT t0.*
+SELECT t0.pid as hn,t0.fullname,t0.birth
+,CONCAT(t0.hno,'  ','หมู่ที่ ',substr(t0.villcode,8,1)) as address
+,substr(t0.villcode,8,1) as village
+,t0.volanteer
 ,SPLIT_STR(GROUP_CONCAT(CAST(h.chroniccode  AS CHAR(10000) CHARACTER SET utf8) ORDER BY h.datedxfirst  DESC SEPARATOR ','),',',1) as last_ht_dx
 ,SPLIT_STR(GROUP_CONCAT(CAST(h.datedxfirst  AS CHAR(10000) CHARACTER SET utf8) ORDER BY h.datedxfirst  DESC SEPARATOR ','),',',1) as last_ht_fu
-,SPLIT_STR(GROUP_CONCAT(CAST(h.typedischart  AS CHAR(10000) CHARACTER SET utf8) ORDER BY h.datedxfirst  DESC SEPARATOR ','),',',1) as last_ht_dsc
+-- ,SPLIT_STR(GROUP_CONCAT(CAST(h.typedischart  AS CHAR(10000) CHARACTER SET utf8) ORDER BY h.datedxfirst  DESC SEPARATOR ','),',',1) as last_ht_dsc
 ,SPLIT_STR(GROUP_CONCAT(CAST(d.chroniccode  AS CHAR(10000) CHARACTER SET utf8) ORDER BY d.datedxfirst  DESC SEPARATOR ','),',',1) as last_dm_dx
 ,SPLIT_STR(GROUP_CONCAT(CAST(d.datedxfirst  AS CHAR(10000) CHARACTER SET utf8) ORDER BY d.datedxfirst  DESC SEPARATOR ','),',',1) as last_dm_fu
-,SPLIT_STR(GROUP_CONCAT(CAST(d.typedischart  AS CHAR(10000) CHARACTER SET utf8) ORDER BY d.datedxfirst  DESC SEPARATOR ','),',',1) as last_dm_dsc
+-- ,SPLIT_STR(GROUP_CONCAT(CAST(d.typedischart  AS CHAR(10000) CHARACTER SET utf8) ORDER BY d.datedxfirst  DESC SEPARATOR ','),',',1) as last_dm_dsc
 FROM
 (
-SELECT p.pid,p.pcucodeperson,p.hcode,CONCAT(t.titlename,p.fname,'   ',p.lname) as fullname,p.birth
+SELECT p.pid,p.pcucodeperson,p.hcode,CONCAT(t.titlename,p.fname,'    ',p.lname) as fullname,p.birth
 ,h.hno,h.villcode
-,concat(v.fname,' ',v.lname) as volanteer
+,concat(v.fname,'   ',v.lname) as volanteer
 FROM person p
 LEFT JOIN ctitle t
 ON p.prename=t.titlecode
