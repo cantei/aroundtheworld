@@ -1,5 +1,5 @@
 SELECT concat(v.fname,' ',v.lname) as volanteer
-,h.hno,h.villcode
+,concat(' ',h.hno) as hno,h.villcode
 ,SPLIT_STR(if(substr(h.hno,1,1)='0',SPLIT_STR(h.hno,'-',2),h.hno),'/',1) as x1
 ,SPLIT_STR(if(substr(h.hno,1,1)='0',SPLIT_STR(h.hno,'-',2),h.hno),'/',2) as x2
 ,if(substr(h.hno,1,1)='0',1,0) as x3
@@ -13,13 +13,14 @@ SELECT concat(v.fname,' ',v.lname) as volanteer
 ,p.birth
 ,TIMESTAMPDIFF(YEAR,p.birth,'2018-10-01') as age
 ,CONCAT(DATE_FORMAT(p.birth,'%d-%m'),'-',year(p.birth)+543) as born 
-,p.typelive,p.hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi) as addressmoi
-,t.hno as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as realaddress
+,p.typelive
+,concat(' ',p.hnomoi) as hnomoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi,p.mumoi) as addressmoi
+,concat(' ',t.hno) as address,concat(t.provcode,t.distcode,t.subdistcode,t.mu) as realaddress
 ,if((TIMESTAMPDIFF(YEAR,p.birth,'2018-10-01') BETWEEN 20 AND 59),'/',NULL) AS 'Worker'
 ,if((TIMESTAMPDIFF(YEAR,p.birth,'2018-10-01') BETWEEN 6 AND 19),'/',NULL) AS 'Educate'
 ,if((TIMESTAMPDIFF(YEAR,p.birth,'2018-10-01') BETWEEN 0 AND 5),'/',NULL) AS 'Child'
 -- ,TIMESTAMPDIFF(week,n.lmp ,CURDATE()) as timega
-,if(SPLIT_STR(GROUP_CONCAT(CAST(a.pregage AS CHAR(10000) CHARACTER SET utf8)  ORDER BY a.datecheck DESC SEPARATOR ','),',',1)  BETWEEN 0 AND 41,'/',NULL) AS 'A'
+,if(SPLIT_STR(GROUP_CONCAT(CAST(a.pregage AS CHAR(10000) CHARACTER SET utf8)  ORDER BY a.datecheck DESC SEPARATOR ','),',',1)  BETWEEN 0 AND 40,'/',NULL) AS 'A'
 -- ,GROUP_CONCAT(ht.chroniccode ORDER BY ht.datedxfirst  DESC) as ht
 -- ,GROUP_CONCAT(dm.chroniccode ORDER BY dm.datedxfirst  DESC) as dm
 ,if(NOT ISNULL(ht.chroniccode) ,'/',NULL) AS 'HT'
@@ -62,8 +63,12 @@ ON ut.typecode=i.incompletecode
 WHERE substr(h.villcode,8,1)='2'
 AND p.typelive in ('1','3')
 AND p.dischargetype='9'
+AND h.hno='99'
 -- AND p.idcard='3841200016821'
-
 GROUP BY p.pid
+
+-- HAVING volanteer LIKE 'จิน%'
 -- LIMIT 100
 -- HAVING NOT ISNULL(A)
+
+ORDER BY x1*1,X2*1,X3*1,fposcode
