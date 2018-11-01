@@ -1,8 +1,17 @@
-# ความครอบคลุมวัคซีนในเด็กอายุครบ 2 ปี
+# ความครอบคลุมวัคซีนในเด็กอายุครบ 3 ปี
 
-SET @d1='2017-10-01';
-SET @d2='2018-09-30';
+SET @d1='2014-10-01';
+SET @d2='2015-09-30';
 
+SELECT t.*
+,CASE WHEN  NOT ISNULL(LAJE1) AND NOT ISNULL(LAJE2) THEN 'compt1'
+			WHEN  NOT ISNULL(JE1) AND NOT ISNULL(JE2)  AND NOT ISNULL(JE3) THEN 'compt2'
+			WHEN  NOT ISNULL(JE1) AND NOT ISNULL(JE2)  AND NOT ISNULL(LAJE1) THEN 'compt3'
+ELSE NULL 
+END AS 'JEFULLY'
+
+FROM 
+(
 SELECT p.idcard
 ,p.pcucodeperson,p.pid
 ,concat(c.titlename,p.fname,'    ',p.lname) as fullname
@@ -43,4 +52,7 @@ AND p.dischargetype='9'
 AND p.nation='99'
 AND p.birth BETWEEN DATE_SUB(@d1, INTERVAL 3 YEAR) AND DATE_SUB(@d2, INTERVAL 3 YEAR)
 GROUP BY CONCAT(p.pcucodeperson,p.pid)
-ORDER BY  h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1);
+ORDER BY  h.villcode,(SPLIT_STR(h.hno,'/', 1)*1),(SPLIT_STR(h.hno,'/',2)*1)
+) as t
+HAVING ISNULL(JEFULLY)
+;
