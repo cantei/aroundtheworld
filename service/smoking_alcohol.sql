@@ -1,8 +1,13 @@
-SELECT t1.pcucode,t1.pid
-,t1.fullname,t1.born,t1.age,t1.typelive
-,t1.address,t1.hno,t1.moo
-,t1.hnomoi,t1.mumoi
-,t1.homeno
+SELECT p.pcucodeperson,p.pid
+-- , t1.pcucodeperson,t1.pcucode,t1.pid
+,CONCAT(c.titlename,p.fname,'   ',p.lname) as fullname
+	,concat(DATE_FORMAT(p.birth, "%d"),'-',DATE_FORMAT(p.birth, "%m"),'-',(DATE_FORMAT(p.birth, "%Y")+543)) as born
+	,TIMESTAMPDIFF(year,p.birth,CURDATE()) as  age
+	,p.typelive
+	,CONCAT(a.hno,'  ','หมู่ที่ ',a.mu )as address
+	,a.hno,a.mu as moo
+	,p.hnomoi,p.mumoi
+	,h.hno as homeno,(substr(h.villcode,7,2)*1) as homevillage
 ,t1.seq,t1.bw,t1.height,t1.waist,t1.ass
 ,substr(t1.his_ciga,1,4) as his_ciga
 ,t2.ppspecial as q_smoking
@@ -13,18 +18,19 @@ SELECT t1.pcucode,t1.pid
 ,t1.low_alcohol
 ,t1.mild_alcohol
 ,t1.heavy_alcohol
-,volanteer
-FROM 
+,CONCAT(o.fname,'  ',o.lname) as 'volanteer'
+FROM person p
+LEFT JOIN ctitle c
+ON p.prename=c.titlecode
+LEFT JOIN personaddresscontact a
+ON p.pcucodeperson=a.pcucodeperson AND p.pid=a.pid 
+LEFT JOIN house h
+ON a.hno=h.hno AND concat(a.provcode,a.distcode,a.subdistcode,a.mu)=h.villcode  
+LEFT JOIN person o
+ON h.pcucodepersonvola=o.pcucodeperson and	h.pidvola=o.pid
+LEFT JOIN 
 (
-	SELECT s.pcucode,s.pid
-	,CONCAT(c.titlename,p.fname,'   ',p.lname) as fullname
-	,concat(DATE_FORMAT(p.birth, "%d"),'-',DATE_FORMAT(p.birth, "%m"),'-',(DATE_FORMAT(p.birth, "%Y")+543)) as born
-	,TIMESTAMPDIFF(year,p.birth,CURDATE()) as  age
-	,p.typelive
-	,CONCAT(a.hno,'  ','หมู่ที่ ',a.mu )as address
-	,a.hno,a.mu as moo
-	,p.hnomoi,p.mumoi
-	,h.hno as homeno
+	SELECT v.pcucodeperson,v.pcucode,v.pid
 	,SPLIT_STR(GROUP_CONCAT(CAST(s.visitno AS CHAR(10000) CHARACTER SET utf8)  ORDER BY s.dateserv  DESC SEPARATOR ','),',',1) as seq
 	,SPLIT_STR(GROUP_CONCAT(CAST(v.weight AS CHAR(10000) CHARACTER SET utf8)  ORDER BY s.dateserv  DESC SEPARATOR ','),',',1) as bw
 	,SPLIT_STR(GROUP_CONCAT(CAST(v.height AS CHAR(10000) CHARACTER SET utf8)  ORDER BY s.dateserv  DESC SEPARATOR ','),',',1) as height
@@ -37,24 +43,13 @@ FROM
 	,if(s.ppspecial='1B600',s.ppspecial,NULL) as 'mild_alcohol'
 	,if(s.ppspecial='1B600',s.ppspecial,NULL) as 'heavy_alcohol'
 	,if(s.ppspecial='1B600',s.ppspecial,NULL) as 'drink_unknown'
-	,CONCAT(o.fname,'  ',o.lname) as 'volanteer'
-	FROM  f43specialpp s 
-	INNER JOIN visit v
-	ON s.pcucode=v.pcucode AND s.visitno=v.visitno 
-	INNER JOIN person p
-	ON v.pcucode=p.pcucodeperson AND v.pid=p.pid
-	LEFT JOIN ctitle c
-	ON p.prename=c.titlecode
-	LEFT JOIN personaddresscontact a
-	ON p.pcucodeperson=a.pcucodeperson AND p.pid=a.pid 
-	LEFT JOIN house h
-	ON a.hno=h.hno AND concat(a.provcode,a.distcode,a.subdistcode,a.mu)=h.villcode  
-	LEFT JOIN person o
-	ON h.pcucodepersonvola=o.pcucodeperson and	h.pidvola=o.pid
+	FROM  visit v
+	INNER JOIN  f43specialpp s 
+	ON v.pcucode=s.pcucode AND v.visitno=s.visitno 
 	WHERE (substr(s.ppspecial,1,4) in ('1B50','1B51','1B52') OR substr(s.ppspecial,1,4)='1B60')
-	AND p.typelive in ('1','3')
-	GROUP BY s.pid
+GROUP BY v.pid
 ) as t1 
+ON p.pcucodeperson=t1.pcucodeperson AND p.pid=t1.pid
 LEFT JOIN 
 (
 	SELECT s.pid,s.visitno 
@@ -79,5 +74,7 @@ LEFT JOIN
 	WHERE  substr(s.ppspecial,1,5) in ('1B509')  
 ) as t4 
 ON  t1.pid=t4.pid AND t1.seq=t4.visitno
--- HAVING his_ciga ='1B50' AND ISNULL(t_smoking)
-ORDER BY t1.moo,volanteer,(SPLIT_STR(t1.hno,'/', 1)*1),(SPLIT_STR(t1.hno,'/',2)*1)
+WHERE  TIMESTAMPDIFF(year,p.birth,CURDATE()) > 15  
+AND p.typelive in ('1','3')
+AND p.dischargetype='9'
+ORDER BY a.mu ,volanteer,(SPLIT_STR(a.hno,'/', 1)*1),(SPLIT_STR(a.hno,'/',2)*1)
