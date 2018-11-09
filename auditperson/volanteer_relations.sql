@@ -34,7 +34,7 @@ WHERE p.dischargetype='9'
 AND r.rightcode='82'
 AND p.dateexpire > CURDATE()
 
--- father(3) mother(4)
+-- father(3) & mother(4)
 UNION 
 SELECT p.idcard as vola_id,concat(p.fname,'   ',p.lname) as volanteer
 ,p.hnomoi,concat(p.mumoi,p.subdistcodemoi,p.distcodemoi,p.provcodemoi) as areacode
@@ -79,9 +79,33 @@ ON p.motherid=t1.idcard
 WHERE p.dischargetype='9'
 AND r.rightcode='82'
 AND p.dateexpire > CURDATE()
-ORDER BY volanteer
+
+UNION 
+SELECT p.idcard as vola_id,concat(p.fname,'   ',p.lname) as volanteer
+,p.hnomoi,concat(p.mumoi,p.subdistcodemoi,p.distcodemoi,p.provcodemoi) as areacode
+,p.rightcode 
+,p.hosmain,p.hossub
+,p.dateexpire 
+,t1.idcard as ref_cid,t1.relate
+FROM person p
+LEFT JOIN cright r	 
+on	p.rightcode=r.rightcode 
+LEFT JOIN crightgroup g
+ON r.rightgroup=g.rightgroupcode 
+LEFT JOIN 
+(
+SELECT p.idcard,'5' AS relate,TIMESTAMPDIFF(year,p.birth,CURDATE()) as age
+FROM person p 
+WHERE p.dischargetype='9'
+) t1
+ON p.mateid=t1.idcard 
+WHERE p.dischargetype='9'
+AND r.rightcode='82'
+AND p.dateexpire > CURDATE()
 ) as v
 LEFT JOIN person r
 ON v.ref_cid=r.idcard 
-HAVING relate in ('1','2') 
+
+-- HAVING relate in ('5','5') 
+
 -- AND  ISNULL(ref_cid)
