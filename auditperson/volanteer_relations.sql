@@ -1,6 +1,18 @@
-SELECT v.*
-,r.fname,r.lname
-,r.rightcode as righttype,r.dateexpire as exp_date
+SELECT v.volanteer,v.hnomoi,(substr(areacode,1,2)*1) as moo
+,v.rightcode as herright,v.hosmain,v.hossub,v.dateexpire
+,v.ref_cid
+,concat(r.fname,'   ',r.lname) as personrelate
+,v.relate 
+,CASE WHEN  v.relate in ('1','2') THEN 'บุตรของ อสม.'
+		WHEN  v.relate in ('3') THEN 'บิดาของ อสม.'
+		WHEN  v.relate in ('4') THEN 'มารดาของ อสม.'
+		WHEN  v.relate in ('5') THEN 'คู่สมรถของ อสม.'
+ELSE NULL 
+END as 'relatename'
+
+,r.rightcode as righttype
+,c.rightname
+,r.dateexpire as exp_date
 ,TIMESTAMPDIFF(year,r.birth,CURDATE()) as age 
 FROM 
 (
@@ -105,7 +117,7 @@ AND p.dateexpire > CURDATE()
 ) as v
 LEFT JOIN person r
 ON v.ref_cid=r.idcard 
-
--- HAVING relate in ('5','5') 
-
--- AND  ISNULL(ref_cid)
+LEFT JOIN cright  c
+ON r.rightcode=c.rightcode 
+HAVING NOT ISNULL(ref_cid) AND relate  in ('1','2','3','4','5')
+ORDER BY substr(areacode,1,2)*1,v.volanteer;
