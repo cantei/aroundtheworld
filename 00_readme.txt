@@ -1,4 +1,9 @@
-# map : AIzaSyCTeUbgScU5eMv6Q2j2Ngh-2ea2K6enh0w
+# map : 
+            1) buffers.php
+            2) housegis.php
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTeUbgScU5eMv6Q2j2Ngh-2ea2K6enh0w&callback=initialize"
+            3) genxml_housegis.php
+               hhouse > pname
 
 # วันเกิด พ.ศ.
 ,CONCAT(DATE_FORMAT(p.birth,'%d-%m'),'-',year(p.birth)+543) as born 
