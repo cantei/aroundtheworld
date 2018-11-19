@@ -4,7 +4,7 @@ SELECT p.pcucodeperson,p.pid
 	,concat(DATE_FORMAT(p.birth, "%d"),'-',DATE_FORMAT(p.birth, "%m"),'-',(DATE_FORMAT(p.birth, "%Y")+543)) as born
 	,TIMESTAMPDIFF(year,p.birth,CURDATE()) as  age
 	,p.typelive
-	,p.hnomoi,p.mumoi
+	,p.hnomoi,p.mumoi,concat(p.provcodemoi,p.distcodemoi,p.subdistcodemoi) as tambon
 	,a.hno,a.mu as moo
 	,CONCAT(a.hno,'  ','หมู่ที่ ',a.mu )as address
 	,h.hno as homeno,(substr(h.villcode,7,2)*1) as homevillage
@@ -20,8 +20,9 @@ ON a.hno=h.hno AND concat(a.provcode,a.distcode,a.subdistcode,a.mu)=h.villcode
 LEFT JOIN person o
 ON h.pcucodepersonvola=o.pcucodeperson and	h.pidvola=o.pid
 
-WHERE p.typelive in ('1')
+WHERE p.typelive in ('1','3')
 AND p.dischargetype='9'
-HAVING ISNULL(homeno) 
--- AND mumoi in ('4','04')
-ORDER BY p.mumoi ,volanteer,(SPLIT_STR(p.hnomoi,'/', 1)*1),(SPLIT_STR(p.hnomoi,'/',2)*1)
+-- HAVING ISNULL(homeno) 
+-- AND mumoi in ('2','02')
+-- ORDER BY p.mumoi ,volanteer,(SPLIT_STR(p.hnomoi,'/', 1)*1),(SPLIT_STR(p.hnomoi,'/',2)*1)
+ORDER BY homevillage,volanteer,address
