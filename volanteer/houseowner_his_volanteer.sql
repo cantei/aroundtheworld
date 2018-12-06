@@ -15,7 +15,7 @@ SPLIT_STR(if(substr(h.hno,1,1)='0',SPLIT_STR(h.hno,'-',2),h.hno),'/',1) as x1
 ,p.fname,p.lname,p.hnomoi,p.mumoi,p.subdistcodemoi,p.distcodemoi,p.provcodemoi  	
 FROM house h
 LEFT   JOIN person p
-ON h.pcucodeperson=p.pcucodeperson AND h.pid=p.pid
+ON h.pcucode=p.pcucodeperson AND h.pid=p.pid
 
 ) as t0
 LEFT JOIN person t1
