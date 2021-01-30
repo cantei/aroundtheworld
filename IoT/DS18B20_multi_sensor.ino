@@ -25,11 +25,9 @@ DallasTemperature sensor1(&oneWire1);
 DallasTemperature sensor2(&oneWire2);
 
 
-//const char* ssid     = ""; 
-//const char* pwd = "";
- 
-const char* ssid = "EMMA_2.4GHz"; // home wifi
-const char* pwd = "me053700"; 
+const char* ssid     = ""; 
+const char* pwd = "";
+
 
 //int timezone = 7 * 3600; //ตั้งค่า TimeZone ตามเวลาประเทศไทย
 //int dst = 0; //กำหนดค่า Date Swing Time
