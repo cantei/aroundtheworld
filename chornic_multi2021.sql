@@ -19,6 +19,8 @@ DROP TABLE	IF EXISTS `me_chronic_multidisease` ;
 			`houseowner` varchar(50) default NULL,
 			`volunteer` varchar(100) default NULL,
 			`telephoneperson` varchar(35) default NULL,
+			`bmi` int(3) default NULL,a
+			`bw` int(3) default NULL,
 			
 			`crd_c` varchar(30) default NULL,  /* J44,J45 */
 			`cvd_c` varchar(30) default NULL,   /* I05-I09 ,I20-I28 */
@@ -254,7 +256,7 @@ INNER JOIN
 		GROUP BY p.pcucodeperson,p.pid
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
-SET t0.ckd_d=t1.diag;
+SET t0.cvd_d=t1.diag;
 
 
 
@@ -296,3 +298,22 @@ INNER JOIN
 ) as t1
 ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
 SET t0.dm_d=t1.diag;
+
+# BMI & BW
+
+# BMI & BW
+UPDATE `me_chronic_multidisease`  t0
+INNER JOIN
+(
+	SELECT  pcucode,pid,screen_date
+	,substring_index(group_concat(screen_date ORDER BY screen_date DESC  SEPARATOR ','), ',', 1) as visit
+	,(substring_index(group_concat(height ORDER BY screen_date DESC  SEPARATOR ','), ',', 1)/100) as height
+	,(substring_index(group_concat(weight ORDER BY screen_date DESC  SEPARATOR ','), ',', 1)) as weight
+	-- ,substring_index(group_concat(bmi ORDER BY screen_date DESC  SEPARATOR ','), ',', 1) as bmi
+	,ROUND((substring_index(group_concat(weight ORDER BY screen_date DESC  SEPARATOR ','), ',', 1)) /((substring_index(group_concat(height ORDER BY screen_date DESC  SEPARATOR ','), ',', 1)/100)*(substring_index(group_concat(height ORDER BY screen_date DESC  SEPARATOR ','), ',', 1)/100)),2) as bmi
+	FROM ncd_person_ncd_screen
+	WHERE screen_date > '2020-09-30'
+	GROUP BY pid 
+) as t1
+ON t0.pcucodeperson=t1.pcucode AND t0.pid=t1.pid 
+SET t0.bw=t1.weight,t0.bmi=t1.bmi;
