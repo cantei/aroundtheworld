@@ -19,7 +19,7 @@ DROP TABLE	IF EXISTS `me_chronic_multidisease` ;
 			`houseowner` varchar(50) default NULL,
 			`volunteer` varchar(100) default NULL,
 			`telephoneperson` varchar(35) default NULL,
-			`bmi` int(3) default NULL,a
+			`bmi` int(3) default NULL,
 			`bw` int(3) default NULL,
 			
 			`crd_c` varchar(30) default NULL,  /* J44,J45 */
@@ -36,7 +36,11 @@ DROP TABLE	IF EXISTS `me_chronic_multidisease` ;
 			`stroke_d` varchar(30) default NULL,
 			`obesity_d` varchar(30) default NULL,
 			`cancer_d` varchar(30) default NULL,
-			`dm_d` varchar(30) default NULL
+			`dm_d` varchar(30) default NULL,
+			`covid1` varchar(10) default NULL,
+			`covid2` varchar(10) default NULL,
+			`covid_appoint` varchar(50) default NULL,
+			`str_flu_visit` varchar(100) default NULL
 			
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		
@@ -317,3 +321,17 @@ INNER JOIN
 ) as t1
 ON t0.pcucodeperson=t1.pcucode AND t0.pid=t1.pid 
 SET t0.bw=t1.weight,t0.bmi=t1.bmi;
+
+# flu visit
+
+UPDATE `me_chronic_multidisease`  t0
+INNER JOIN
+(
+		SELECT pcucodeperson,pid
+		 ,GROUP_CONCAT(DISTINCT CONVERT( dateepi USING utf8) ORDER BY dateepi DESC ) as str_flu_visit
+		FROM visitepi 
+		WHERE vaccinecode='FLU'
+		GROUP BY pid
+) as t1
+ON t0.pcucodeperson=t1.pcucodeperson AND t0.pid=t1.pid 
+SET t0.str_flu_visit=t1.str_flu_visit;
